@@ -20,7 +20,7 @@ function NavBar() {
         <button onClick={() => scrollToSection("home")} className="home-page">
           Home
         </button>
-        <button onClick={() => scrollToSection("brands")} className="brands-page">
+        <button onClick={() => scrollToSection("brands-section")} className="brands-page">
           Brands
         </button>
         <Link to="/my-list">My List</Link>

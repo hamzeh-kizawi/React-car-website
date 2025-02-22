@@ -42,19 +42,19 @@
 
 
 .content h1 {
-  font-size: 3rem;
+  font-size: 70px;
   font-weight: bold;
 }
 
 .content p {
-  font-size: 1.5rem;
+  font-size: 30px;
 }
 
 .content button{
   margin-top: 10px;
   background-color: white;
   color: black;
-  padding: 10px 20px;
+  padding: 15px 30px;
   border: none;
   border-radius: 5px;
   font-size: 18px;

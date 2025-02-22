@@ -1,0 +1,47 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.brands-container {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.brands-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; 
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.brand-card {
+  background-color: #2d2c2c;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 150px; 
+  max-width: 200px; 
+  cursor: pointer;
+}
+
+.brand-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.brand-card img {
+  max-width: 100%;
+  height: auto;
+  max-height: 80px;
+  object-fit: contain;
+}
+
