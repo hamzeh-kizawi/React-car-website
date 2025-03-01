@@ -1,6 +1,7 @@
 import React from 'react'
 import "../css/Brands.css"
 
+
 const Brands = () => {
   const brands = [
     { name: "BMW", logo: "/Cars-logo/BMW-logo.png" },
