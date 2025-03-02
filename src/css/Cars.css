@@ -1,0 +1,95 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+
+.car-section-name{
+  color: white;
+  font-size: 28px;
+  border-bottom: 1px solid white;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.card {
+  width: 300px;
+  height: 360px; 
+  background-color: white;
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+
+.product-image img {
+  width: 100%;
+  height: 200px; 
+  object-fit: cover;
+}
+
+.car-name {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+  margin-left: 10px;
+  padding: 10px;
+  border-bottom: 1px solid black;
+  color: black;
+  margin-bottom: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.car-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid black;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.car-info div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.car-info img {
+  width: 20px;
+  height: 20px;
+}
+
+.car-info p {
+  font-size: 17px;
+  font-weight: bold;
+  color: black;
+}
+
+.price-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.price-info p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333; 
+}
+
+.price-info a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.price-info a:hover {
+  color: #0056b3;
+}
