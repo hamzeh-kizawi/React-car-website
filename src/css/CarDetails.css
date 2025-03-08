@@ -1,0 +1,108 @@
+.no-scroll{
+  overflow: hidden;
+}
+.cars-details-component {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.car-details-model {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+.car-details-image {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.car-details-model h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+.flex-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.left-side,
+.right-side {
+  flex: 1;
+}
+
+.left-side p,
+.right-side p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.left-side strong,
+.right-side strong {
+  color: #333;
+}
+
+.description {
+  font-size: 14px;
+  color: black;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .flex-info {
+    flex-direction: column;
+  }
+
+  .car-details-model {
+    padding: 15px;
+  }
+
+  .car-details-model h2 {
+    font-size: 20px;
+  }
+
+  .left-side p,
+  .right-side p {
+    font-size: 14px;
+  }
+
+  .description {
+    font-size: 13px;
+  }
+}

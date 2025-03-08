@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/Cars.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { CarDetails } from "./CarDetails";
 
 export default function Cars({ brand, cars }) {
+  const [selectedCar, setSelectedCar] = useState(null);
+
+  const handleViewDetails = (car) => {
+    setSelectedCar(car);
+  };
+
+  const closeDetails = () => {
+    setSelectedCar(null);
+  };
+
   const responsive = {
     superLargeDesktop: { breakpoint: { max: 4000, min: 1024 }, items: 4 },
     desktop: { breakpoint: { max: 1024, min: 800 }, items: 3 },
@@ -37,11 +48,15 @@ export default function Cars({ brand, cars }) {
             </div>
             <div className="price-info">
               <p>${car.price}</p>
-              <a href="#">View Details</a>
+              <button className="details-btn" onClick={() => handleViewDetails(car)}>
+                View Details
+              </button>
             </div>
           </div>
         ))}
       </Carousel>
+
+      {selectedCar && <CarDetails car={selectedCar} onClose={closeDetails} />}
     </>
   );
 }
