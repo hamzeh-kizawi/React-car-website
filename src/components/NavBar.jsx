@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../css/NavBar.css"
 
 function NavBar() {
+  const [scrolled, setScrolled] = useState(false)
+
   const scrollToSection = (id) => {
     const section = document.getElementById(id);
     if (section) {
@@ -10,8 +12,26 @@ function NavBar() {
     }
   };
 
+  useEffect(()=>{
+    const handleScroll = ()=>{
+      if(window.scrollY > 50){
+        setScrolled(true)
+      } else{
+        setScrolled(false)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+
+    return ()=>{
+      window.removeEventListener("scroll", handleScroll)
+    }
+
+  },[])
+  
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
       <div className="logo">
         <Link to="/">SpeedAI</Link>
       </div>

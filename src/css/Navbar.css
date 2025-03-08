@@ -1,5 +1,4 @@
-
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -7,7 +6,7 @@
 }
 
 .navbar {
-  position: fixed; 
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -16,7 +15,7 @@
   align-items: center;
   padding: 30px 180px;
   color: white;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 .navbar::after {
@@ -28,7 +27,18 @@
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%); 
+  transform: translateX(-50%);
+  transition: opacity 0.3s ease;
+}
+
+.navbar.scrolled {
+  background-color: #0f1419;
+  padding: 15px 180px;
+  transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+.navbar.scrolled::after {
+  display: none;
 }
 
 .logo a {
@@ -50,6 +60,7 @@
   background: none;
   border: none;
   font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
   text-decoration: none;
   color: white;
@@ -80,15 +91,11 @@
   backdrop-filter: blur(10px);
 }
 
-.search ion-icon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 10px;
-  padding-left: 10px;
+.search input::placeholder{
   color: white;
-  border-right: 1px solid white;
 }
+
+
 
 .login .login-button {
   background-color: transparent;
@@ -104,7 +111,3 @@
 .login .login-button:hover {
   color: rgb(244, 119, 18);
 }
-
-
-
-
