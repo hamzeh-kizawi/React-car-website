@@ -22,7 +22,6 @@ const Brands = () => {
     { name: "Volkswagen", logo: "/Cars-logo/Volkswagen-logo.png" },
   ];
 
-  // Reorder brands: Move selectedBrand to the top
   const sortedBrands = selectedBrand
     ? [brands.find((b) => b.name === selectedBrand), ...brands.filter((b) => b.name !== selectedBrand)]
     : brands;
