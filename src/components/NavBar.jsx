@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import "../css/NavBar.css"
+import "../css/NavBar.css";
+import { CarContext } from "../contexts/CarContext";
 
 function NavBar() {
-  const [scrolled, setScrolled] = useState(false)
+  const { cars } = useContext(CarContext); // FIXED: Using correct context name
+  const [scrolled, setScrolled] = useState(false);
 
   const scrollToSection = (id) => {
     const section = document.getElementById(id);
@@ -12,23 +14,16 @@ function NavBar() {
     }
   };
 
-  useEffect(()=>{
-    const handleScroll = ()=>{
-      if(window.scrollY > 50){
-        setScrolled(true)
-      } else{
-        setScrolled(false)
-      }
-    }
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-
-    return ()=>{
-      window.removeEventListener("scroll", handleScroll)
-    }
-
-  },[])
-  
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
@@ -52,7 +47,7 @@ function NavBar() {
       </div>
 
       <div className="login">
-      <button className="login-button">LOGIN</button>
+        <button className="login-button">LOGIN</button>
       </div>
     </nav>
   );

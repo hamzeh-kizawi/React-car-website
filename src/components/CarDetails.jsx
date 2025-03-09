@@ -2,14 +2,13 @@ import React, { useEffect } from "react";
 import "../css/CarDetails.css";
 
 export const CarDetails = ({ car, onClose }) => {
+  useEffect(() => {
+    document.body.classList.add("no-scroll");
 
-  useEffect(()=>{
-    document.body.classList.add('no-scroll')
-
-    return ()=>{
-      document.body.classList.remove('no-scroll')
-    }
-  },[])
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, []);
 
   if (!car) return null;
 

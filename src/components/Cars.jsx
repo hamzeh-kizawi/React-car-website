@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../css/Cars.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { CarDetails } from "./CarDetails";
+import { CarContext } from "../contexts/CarContext";
 
-export default function Cars({ brand, cars }) {
+export default function Cars({ brand }) {
+  const { cars } = useContext(CarContext);
   const [selectedCar, setSelectedCar] = useState(null);
 
   const handleViewDetails = (car) => {
@@ -22,11 +24,14 @@ export default function Cars({ brand, cars }) {
     mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
   };
 
+  // Filter cars by brand
+  const filteredCars = cars.filter((car) => car.brand === brand);
+
   return (
     <>
       <p className="car-section-name">{brand} Section</p>
       <Carousel responsive={responsive}>
-        {cars.map((car) => (
+        {filteredCars.map((car) => (
           <div className="card" key={car.id}>
             <div className="product-image">
               <img src={car.image} alt={car.name} />

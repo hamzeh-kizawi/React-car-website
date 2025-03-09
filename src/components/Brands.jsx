@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../css/Brands.css";
 import Cars from "./Cars";
+import { CarContext } from "../contexts/CarContext";
 
 const Brands = () => {
-  const [cars, setCars] = useState([]);
-  const [selectedBrand, setSelectedBrand] = useState(null);
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/cars")
-      .then((response) => response.json())
-      .then((data) => setCars(data))
-      .catch((error) => console.error("Error fetching cars: ", error));
-  }, []);
+  const {cars, selectedBrand, setSelectedBrand} = useContext(CarContext)
 
   const brands = [
     { name: "BMW", logo: "/Cars-logo/BMW-logo.png" },
