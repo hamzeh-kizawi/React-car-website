@@ -8,7 +8,7 @@ const SearchBar = ({ onClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCar, setSelectedCar] = useState(null);
 
-  // Filter cars based on user input
+
   const filteredCars = cars.filter((car) =>
     car.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -25,7 +25,6 @@ const SearchBar = ({ onClose }) => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      {/* Show search results */}
       {searchQuery && (
         <div className="search-results">
           {filteredCars.length > 0 ? (
