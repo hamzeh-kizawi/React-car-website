@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect, url_for
 from flask_cors import CORS
 import mysql.connector
 import os
@@ -25,6 +25,10 @@ def get_cars():
     cars = cursor.fetchall()
     cursor.close()
     return jsonify(cars)
+
+@app.route('/home', methods= ["GET"])
+def home_page():
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

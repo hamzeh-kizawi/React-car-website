@@ -41,12 +41,21 @@
   display: none;
 }
 
-.logo a {
+.logo-button {
+  background: none;
+  border: none;
   color: white;
   font-size: 26px;
   font-weight: bold;
   text-decoration: none;
   font-family: Georgia, 'Times New Roman', Times, serif;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+}
+
+.logo-button:hover {
+  opacity: 0.8;
 }
 
 .navbar-links {

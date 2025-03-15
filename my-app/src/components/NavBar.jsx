@@ -29,7 +29,7 @@ function NavBar() {
     <>
       <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
         <div className="logo">
-          <Link to="/">SpeedAI</Link>
+          <button onClick={()=> scrollToSection("home")} className="logo-button">SpeedAI</button>
         </div>
 
         <div className="navbar-links">
