@@ -117,6 +117,12 @@
   transition: color 0.3s ease;
 }
 
-.login .login-button:hover {
+.login-link{
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-link:hover{
   color: rgb(244, 119, 18);
 }

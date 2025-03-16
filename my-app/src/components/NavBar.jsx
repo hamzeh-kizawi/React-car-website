@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../css/NavBar.css";
 import SearchBar from "./SearchBar";
 
+
 function NavBar() {
   const [scrolled, setScrolled] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -48,7 +49,7 @@ function NavBar() {
         </div>
 
         <div className="login">
-          <button className="login-button">LOGIN</button>
+          <button className="login-button"><Link className="login-link" to="/Login">LOGIN</Link></button>
         </div>
       </nav>
 

@@ -4,8 +4,8 @@
   box-sizing: border-box;
 }
 
-
 .brands-container {
+  background-color: black;
   padding: 40px 20px;
   text-align: center;
 }
