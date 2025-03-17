@@ -49,7 +49,7 @@ function NavBar() {
         </div>
 
         <div className="login">
-          <button className="login-button"><Link className="login-link" to="/Login">LOGIN</Link></button>
+        <Link className="login-link" to="/Login"><button className="login-button">LOGIN</button></Link>
         </div>
       </nav>
 

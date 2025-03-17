@@ -2,7 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Montserrat", "sans-serif";
+  font-family: "Oswald", "sans-serif";
 }
 
 .navbar {
@@ -48,7 +48,7 @@
   font-size: 26px;
   font-weight: bold;
   text-decoration: none;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: "Oswald", 'Times New Roman', Times, serif;
   cursor: pointer;
   padding: 0;
   outline: none;
@@ -79,7 +79,7 @@
 
 .navbar-links button:hover,
 .navbar-links a:hover {
-  color: rgb(244, 119, 18);
+  color: rgb(210, 52, 52);
 }
 
 .search {
@@ -117,6 +117,7 @@
   transition: color 0.3s ease;
 }
 
+
 .login-link{
   color: white;
   text-decoration: none;
@@ -124,5 +125,5 @@
 }
 
 .login-link:hover{
-  color: rgb(244, 119, 18);
+  color: rgb(210, 52, 52);
 }

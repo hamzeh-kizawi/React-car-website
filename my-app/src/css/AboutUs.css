@@ -1,0 +1,94 @@
+.aboutUs-container{
+  width: 100%;
+  min-height: 120vh;
+  background-color: white;
+}
+
+.aboutUs-texts{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.header{
+  margin-top: 100px;
+  margin-bottom: 20px;
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.header span{
+  color: rgb(210, 52, 52);
+}
+
+.mid-text{
+  max-width: 750px;
+  margin-bottom: 50px;
+  font-size: 400;
+  color: #706f6f;
+}
+
+.last-text{
+  margin-bottom:40px ;
+  color: #464646 ;
+}
+
+.aboutUs-info{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.about-us-car-image img{
+  width: 650px;
+}
+
+.information{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 100px;
+}
+
+.information .numbers{
+  color: rgb(210, 52, 52);
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.information p{
+font-size: 20px;
+font-weight: 500;
+color: black;
+}
+
+.left-side-first, .left-side-second,
+.right-side-first, .right-side-second{
+  background-color: white;
+  margin-bottom: 40px;
+  padding: 20px 30px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.left-side-first:hover, .left-side-second:hover,
+.right-side-first:hover, .right-side-second:hover {
+  color: white;
+  background-color: rgb(210, 52, 52);
+}
+
+.left-side-first:hover .numbers, .left-side-second:hover .numbers,
+.right-side-first:hover .numbers, .right-side-second:hover .numbers {
+  color: white;
+}
+
+.left-side-first:hover p, .left-side-second:hover p,
+.right-side-first:hover p, .right-side-second:hover p {
+  color: white;
+}
+
+

@@ -1,7 +1,7 @@
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import Brands from './components/Brands';
-import { CarProvider } from './contexts/CarContext';
+import AboutUs from './components/AboutUs';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
@@ -15,6 +15,7 @@ function App() {
       <>
         <NavBar />
         <Home />
+        <AboutUs />
         <Brands />
       </>
       }>   
