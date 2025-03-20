@@ -1,10 +1,10 @@
-.aboutUs-container{
+.aboutUs-container {
   width: 100%;
   min-height: 120vh;
   background-color: white;
 }
 
-.aboutUs-texts{
+.aboutUs-texts {
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -12,61 +12,71 @@
   align-items: center;
 }
 
-.header{
+.header {
   margin-top: 100px;
   margin-bottom: 20px;
   font-size: 34px;
   font-weight: bold;
 }
 
-.header span{
+.header span {
   color: rgb(210, 52, 52);
 }
 
-.mid-text{
+.mid-text {
   max-width: 750px;
   margin-bottom: 50px;
   font-size: 400;
   color: #706f6f;
 }
 
-.last-text{
-  margin-bottom:40px ;
-  color: #464646 ;
+.last-text {
+  margin-bottom: 40px;
+  color: #464646;
 }
 
-.aboutUs-info{
+.aboutUs-info {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
-.about-us-car-image img{
+.about-us-car-image img {
   width: 650px;
+  transform: scale(0.5) translateY(100px);
+  opacity: 0;
+  z-index: -1;
+  transition: transform 1s ease-out, opacity 1s ease-out;
 }
 
-.information{
+.about-us-car-image.animate img {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  z-index: 1;
+}
+
+.information {
   display: flex;
   justify-content: center;
   align-items: center;
   column-gap: 100px;
 }
 
-.information .numbers{
+.information .numbers {
   color: rgb(210, 52, 52);
   font-size: 28px;
   font-weight: 800;
   margin-bottom: 5px;
 }
 
-.information p{
-font-size: 20px;
-font-weight: 500;
-color: black;
+.information p {
+  font-size: 20px;
+  font-weight: 500;
+  color: black;
 }
 
 .left-side-first, .left-side-second,
-.right-side-first, .right-side-second{
+.right-side-first, .right-side-second {
   background-color: white;
   margin-bottom: 40px;
   padding: 20px 30px;
@@ -90,5 +100,3 @@ color: black;
 .right-side-first:hover p, .right-side-second:hover p {
   color: white;
 }
-
-

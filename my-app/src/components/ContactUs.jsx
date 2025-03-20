@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import emailjs from "@emailjs/browser"; // Import EmailJS
+import emailjs from "@emailjs/browser";
 import "../css/ContactUs.css";
 
 function ContactUs() {
@@ -13,7 +13,7 @@ function ContactUs() {
     e.preventDefault();
     setIsSending(true);
 
-    // Debugging: Check if environment variables are loaded
+  
     console.log("Service ID:", import.meta.env.VITE_EMAILJS_SERVICE_ID);
     console.log("Template ID:", import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
     console.log("Public Key:", import.meta.env.VITE_EMAILJS_PUBLIC_KEY);

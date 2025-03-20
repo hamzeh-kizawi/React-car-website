@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import "../css/AboutUs.css";
 
 function AboutUs() {
+  const [isVisible, setIsVisible] = useState(false);
+  const aboutUsRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio > 0.7) { 
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.7 }
+    );
+
+    if (aboutUsRef.current) {
+      observer.observe(aboutUsRef.current);
+    }
+
+    return () => {
+      if (aboutUsRef.current) {
+        observer.unobserve(aboutUsRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className='aboutUs-container'>
+    <div className='aboutUs-container' ref={aboutUsRef}>
       <div className="aboutUs-content">
         <div className="aboutUs-texts">
           <p className='header'>Cars That <span>Inspire</span> Journeys.</p>
@@ -11,7 +35,7 @@ function AboutUs() {
           <p className='last-text'>We know that for you it's not just about driving, it's about experiencing the road.</p>
         </div>
         <div className="aboutUs-info">
-          <div className="about-us-car-image">
+          <div className={`about-us-car-image ${isVisible ? "animate" : ""}`}>
             <img src="./images/about-us-image.jpg" alt="about us image" />
           </div>
           <div className="information">
