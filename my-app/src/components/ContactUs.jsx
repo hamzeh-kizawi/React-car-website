@@ -36,7 +36,6 @@ function ContactUs() {
       console.log("Email Sent:", response);
       alert("Message Sent Successfully! ✅");
 
-      // Reset form fields
       setFullName("");
       setPhone("");
       setEmail("");
@@ -87,6 +86,9 @@ function ContactUs() {
                     className="contactUs-input-style"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                    }}
                     required
                   />
                 </div>

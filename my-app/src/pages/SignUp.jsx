@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
 import BackToMainScreen from '../components/BackToMainScreen';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../css/SignUp.css";
 
 function SignUp() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch('http://localhost:5000/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username: userName, email, password }),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      navigate('/login');
+    } else {
+      alert(data.message);
+    }
+  };
 
   return (
     <div className='sign-up-container'>
@@ -19,7 +37,7 @@ function SignUp() {
         <h1>Welcome to SpeedAI</h1>
         <div className='sign-up-header'>Sign up</div>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <label>UserName*</label>
           <input 
             type="text"
@@ -47,7 +65,7 @@ function SignUp() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button className='sign-up-btn'>Sign up</button>
+          <button className='sign-up-btn' type="submit">Sign up</button>
         </form>
 
         <div className="sign-up-footer">
