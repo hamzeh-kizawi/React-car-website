@@ -2,60 +2,71 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../css/NavBar.css";
 import SearchBar from "./SearchBar";
-
+import Logout from "./Logout";
+import { useAuth } from "../contexts/AuthContext";
 
 function NavBar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [showSearch, setShowSearch] = useState(false);
+    const [showLogout, setShowLogout] = useState(false);
 
-  const scrollToSection = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+    const { user } = useAuth();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+    const scrollToSection = (id) => {
+        const section = document.getElementById(id);
+        if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+        }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 50);
+        };
 
-  return (
-    <>
-      <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
-        <div className="logo">
-          <button onClick={()=> scrollToSection("home")} className="logo-button">SpeedAI</button>
-        </div>
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
-        <div className="navbar-links">
-          <button onClick={() => scrollToSection("home")} className="home-page">
-            Home
-          </button>
-          <button onClick={() => scrollToSection("brands-section")} className="brands-page">
-            Brands
-          </button>
-          <Link to="/my-list">My List</Link>
-        </div>
+    return (
+        <>
+            <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+                <div className="logo">
+                    <button onClick={() => scrollToSection("home")} className="logo-button">SpeedAI</button>
+                </div>
 
-        <div className="search" onClick={() => setShowSearch(true)}>
-          <input type="text" placeholder="Search" readOnly />
-          <ion-icon name="search-outline" />
-        </div>
+                <div className="navbar-links">
+                    <button onClick={() => scrollToSection("home")} className="home-page">
+                        Home
+                    </button>
+                    <button onClick={() => scrollToSection("brands-section")} className="brands-page">
+                        Brands
+                    </button>
+                    <Link to="/my-list">My List</Link>
+                </div>
 
-        <div className="login">
-        <Link className="login-link" to="/Login"><button className="login-button">LOGIN</button></Link>
-        </div>
-      </nav>
+                <div className="search" onClick={() => setShowSearch(true)}>
+                    <input type="text" placeholder="Search" readOnly />
+                    <ion-icon name="search-outline" />
+                </div>
 
-      {showSearch && <SearchBar onClose={() => setShowSearch(false)} />}
-    </>
-  );
+                <div className="login">
+                    {user ? (
+                        <button className="username-button" onClick={() => setShowLogout(true)}>
+                            {user.username}
+                        </button>
+                    ) : (
+                        <Link className="login-link" to="/Login"><button className="login-button">LOGIN</button></Link>
+                    )}
+                </div>
+            </nav>
+
+            {showSearch && <SearchBar onClose={() => setShowSearch(false)} />}
+            {showLogout && <Logout onClose={() => setShowLogout(false)} />}
+        </>
+    );
 }
 
 export default NavBar;
