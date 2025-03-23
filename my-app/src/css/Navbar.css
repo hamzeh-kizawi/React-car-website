@@ -15,7 +15,7 @@
   align-items: center;
   padding: 30px 180px;
   color: white;
-  z-index: 1000;
+  z-index: 10000000;
 }
 
 .navbar::after {

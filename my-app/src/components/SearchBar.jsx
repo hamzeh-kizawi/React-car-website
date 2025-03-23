@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import "../css/SearchBar.css";
 import { CarContext } from "../contexts/CarContext";
 import { CarDetails } from "./CarDetails";
@@ -7,11 +7,31 @@ const SearchBar = ({ onClose }) => {
   const { cars } = useContext(CarContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCar, setSelectedCar] = useState(null);
-
+  const inputRef = useRef(null);
 
   const filteredCars = cars.filter((car) =>
     car.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        if (selectedCar) {
+          setSelectedCar(null);
+        } else {
+          onClose();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose, selectedCar]);
 
   return (
     <div className="search-overlay">
@@ -19,6 +39,7 @@ const SearchBar = ({ onClose }) => {
       <h2>Search for products</h2>
       <input
         type="text"
+        ref={inputRef}
         className="search-input"
         placeholder="Start typing to see products..."
         value={searchQuery}
@@ -29,7 +50,11 @@ const SearchBar = ({ onClose }) => {
         <div className="search-results">
           {filteredCars.length > 0 ? (
             filteredCars.map((car) => (
-              <div key={car.id} className="search-item" onClick={() => setSelectedCar(car)}>
+              <div
+                key={car.id}
+                className="search-item"
+                onClick={() => setSelectedCar(car)}
+              >
                 <img src={car.image} alt={car.name} className="car-image" />
                 <div className="car-info">
                   <h4>{car.name}</h4>
@@ -42,7 +67,9 @@ const SearchBar = ({ onClose }) => {
         </div>
       )}
 
-      {selectedCar && <CarDetails car={selectedCar} onClose={() => setSelectedCar(null)} />}
+      {selectedCar && (
+        <CarDetails car={selectedCar} onClose={() => setSelectedCar(null)} />
+      )}
     </div>
   );
 };
