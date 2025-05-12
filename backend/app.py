@@ -3,6 +3,8 @@ from flask_cors import CORS
 import mysql.connector
 import os
 import bcrypt
+import requests 
+import openai 
 from dotenv import load_dotenv
 from flask_jwt_extended import (
     create_access_token,
@@ -11,8 +13,8 @@ from flask_jwt_extended import (
     get_jwt_identity,
     JWTManager,
     set_access_cookies,
-    unset_jwt_cookies,
-    set_refresh_cookies
+    set_refresh_cookies,
+    unset_jwt_cookies
 )
 from datetime import timedelta
 
@@ -131,6 +133,76 @@ def get_user():
     cursor.close()
     db.close()
     return jsonify(user=user)
+
+@app.route('/chatbot', methods=['POST'])
+def chatbot():
+    user_query = request.json.get('query')
+    if not user_query:
+        return jsonify({"response": "Please provide a valid query."}), 400
+
+    # Fetch car data from the database
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM cars")
+    cars = cursor.fetchall()
+    cursor.close()
+    db.close()
+
+    # Prepare car data for DeepSeek
+    car_list = "\n".join([
+        f"Brand: {car['brand']}\nModel: {car['name']}\nType: {car['type']}\nYear: {car['model_year']}\n"
+        f"Price: ${car['price']}\nFuel Type: {car['fuel_type']}\nHorsepower: {car['horsepower']} HP\n"
+        f"Description: {car['description']}\nSeating Capacity: {car['seating_capacity']}\n---"
+        for car in cars
+    ])
+
+    # DeepSeek V3 API Call
+    api_key = os.getenv("DEEPSEEK_API_KEY")
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    data = {
+        "model": "deepseek-reasoner",
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    f"You are a car sales assistant. Use only the following car inventory data:\n\n{car_list}\n\n"
+                    "Rules:\n"
+                    "- Only respond with information from this car list.\n"
+                    "- If the information is not present, reply with 'Sorry, I couldn't find the information you requested.'"
+                )
+            },
+            {"role": "user", "content": user_query}
+        ],
+        "temperature": 0.7,
+        "max_tokens": 1000
+    }
+
+    try:
+        response = requests.post(
+            "https://api.deepseek.com/v1/chat/completions",
+            headers=headers,
+            json=data
+        )
+
+        response.raise_for_status()
+        response_data = response.json()
+        
+        choices = response_data.get("choices", [])
+        if choices and "message" in choices[0] and "content" in choices[0]["message"]:
+            assistant_message = choices[0]["message"]["content"]
+            return jsonify({"response": assistant_message}), 200
+        
+        return jsonify({"response": "No response from DeepSeek."}), 200
+    
+    except requests.exceptions.RequestException as e:
+        print("DeepSeek API Error:", str(e))
+        return jsonify({"response": "Error connecting to DeepSeek."}), 500
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
