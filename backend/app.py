@@ -6,6 +6,7 @@ import bcrypt
 import requests
 import openai
 import json
+import difflib
 from dotenv import load_dotenv
 from flask_jwt_extended import (
     create_access_token,
@@ -33,7 +34,7 @@ app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/refresh'
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
-app.config['JWT_COOKIE_SECURE'] = False  # Use True in production with HTTPS
+app.config['JWT_COOKIE_SECURE'] = False  # use true in production with HTTPS
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=7)
 
@@ -49,13 +50,25 @@ connection_config = {
 def get_db():
     return mysql.connector.connect(**connection_config)
 
+def find_closest_car_match(query, cars):
+    all_names = [f"{car['brand']} {car['name']}" for car in cars]
+    matches = difflib.get_close_matches(query.lower(), [name.lower() for name in all_names], n=1, cutoff=0.6)
+    
+    if matches:
+        match_lower = matches[0]
+        for name in all_names:
+            if name.lower() == match_lower:
+                return name
+    return None
+
+
 def send_request_with_retries(url, headers, data, retries=3, delay=2):
     session = requests.Session()
     retry = Retry(
         total=retries,
         backoff_factor=delay,
         status_forcelist=[500, 502, 503, 504],
-        allowed_methods=["POST"]  # Updated from method_whitelist
+        allowed_methods=["POST"] 
     )
     adapter = HTTPAdapter(max_retries=retry)
     session.mount("https://", adapter)
@@ -174,6 +187,10 @@ def chatbot():
         print(f"Database Chatbot Fetch Error: {err}")
         return jsonify({"response": "Sorry, I'm having trouble accessing the car inventory right now. Please try again later."}), 500
 
+    closest_car_name = find_closest_car_match(user_query, cars)
+    if closest_car_name:
+        user_query = f"Tell me about the {closest_car_name}"
+
     car_list = "\n".join([
         f"{car['brand']} {car['name']} ({car['model_year']}) - {car['type']}, {car['fuel_type']}, {car['horsepower']} HP, ${car['price']}"
         for car in cars
@@ -220,6 +237,8 @@ def chatbot():
         return jsonify({"response": response.json()["choices"][0]["message"]["content"].strip()}), 200
 
     return jsonify({"response": "Sorry, I couldn't get a response from the chatbot. Please try again later."}), 500
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
