@@ -53,13 +53,15 @@ function NavBar() {
                 </div>
 
                 <div className="login">
-                    {user ? (
-                        <button className="username-button" onClick={() => setShowLogout(true)}>
-                            {user.username}
-                        </button>
-                    ) : (
-                        <Link className="login-link" to="/Login"><button className="login-button">LOGIN</button></Link>
-                    )}
+                {user ? (
+                    <button className="username-button" onClick={() => setShowLogout(true)}>
+                        {user.username === "Guest" ? "Guest" : user.username}
+                    </button>
+                ) : (
+                    <Link className="login-link" to="/Login">
+                        <button className="login-button">LOGIN</button>
+                    </Link>
+                )}
                 </div>
             </nav>
 

@@ -71,7 +71,25 @@ function Login() {
                     </button>
                 </form>
                 <div className='guest-container'>
-                    <button className='guest-login-btn'>
+                    <button
+                        className='guest-login-btn'
+                        onClick={async () => {
+                            try {
+                                const response = await fetch('http://localhost:5000/guest-login', {
+                                    method: 'POST',
+                                    credentials: 'include',
+                                });
+                                if (response.ok) {
+                                    await fetchUser();
+                                    navigate('/');
+                                } else {
+                                    console.error("Guest login failed.");
+                                }
+                            } catch (error) {
+                                console.error("Guest login error:", error);
+                            }
+                        }}
+                        >
                         Continue as a Guest
                     </button>
                 </div>

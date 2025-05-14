@@ -133,6 +133,17 @@ def login():
         return response, 200
     else:
         return jsonify({"message": "Invalid credentials"}), 401
+    
+@app.route('/guest-login', methods=['POST'])
+def guest_login():
+    guest_identity = "guest_user"  
+    access_token = create_access_token(identity=guest_identity)
+    refresh_token = create_refresh_token(identity=guest_identity)
+    response = jsonify({"message": "Guest login successful"})
+    set_access_cookies(response, access_token)
+    set_refresh_cookies(response, refresh_token)
+    return response, 200
+
 
 @app.route('/refresh', methods=['POST'])
 @jwt_required(refresh=True)
@@ -153,14 +164,18 @@ def logout():
 @app.route('/user', methods=['GET'])
 @jwt_required()
 def get_user():
-    user_id = get_jwt_identity()
+    identity = get_jwt_identity()
+    if identity == "guest_user":
+        return jsonify(user={"id": None, "username": "Guest", "email": None}), 200
+
     db = get_db()
     cursor = db.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+    cursor.execute("SELECT * FROM users WHERE id = %s", (identity,))
     user = cursor.fetchone()
     cursor.close()
     db.close()
     return jsonify(user=user)
+
 
 @app.route('/chatbot', methods=['POST'])
 def chatbot():
