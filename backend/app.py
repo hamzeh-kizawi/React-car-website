@@ -25,7 +25,6 @@ from requests.packages.urllib3.util.retry import Retry
 load_dotenv()
 
 app = Flask(__name__)
-
 CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
 
 # JWT Configuration
@@ -34,7 +33,7 @@ app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/refresh'
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
-app.config['JWT_COOKIE_SECURE'] = False  # use true in production with HTTPS
+app.config['JWT_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=7)
 
@@ -61,14 +60,13 @@ def find_closest_car_match(query, cars):
                 return name
     return None
 
-
 def send_request_with_retries(url, headers, data, retries=3, delay=2):
     session = requests.Session()
     retry = Retry(
         total=retries,
         backoff_factor=delay,
         status_forcelist=[500, 502, 503, 504],
-        allowed_methods=["POST"] 
+        allowed_methods=["POST"]
     )
     adapter = HTTPAdapter(max_retries=retry)
     session.mount("https://", adapter)
@@ -80,7 +78,6 @@ def send_request_with_retries(url, headers, data, retries=3, delay=2):
     except requests.exceptions.RequestException as e:
         print(f"DeepSeek API Error: {e}")
         return None
-
 
 @app.route('/cars', methods=['GET'])
 def get_cars():
@@ -133,17 +130,16 @@ def login():
         return response, 200
     else:
         return jsonify({"message": "Invalid credentials"}), 401
-    
+
 @app.route('/guest-login', methods=['POST'])
 def guest_login():
-    guest_identity = "guest_user"  
+    guest_identity = "guest_user"
     access_token = create_access_token(identity=guest_identity)
     refresh_token = create_refresh_token(identity=guest_identity)
     response = jsonify({"message": "Guest login successful"})
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)
     return response, 200
-
 
 @app.route('/refresh', methods=['POST'])
 @jwt_required(refresh=True)
@@ -176,9 +172,14 @@ def get_user():
     db.close()
     return jsonify(user=user)
 
-
 @app.route('/chatbot', methods=['POST'])
+@jwt_required()
 def chatbot():
+    identity = get_jwt_identity()
+    if identity != "guest_user" and not isinstance(identity, int):
+        print(f"[BLOCKED] Invalid identity accessing chatbot: {identity}")
+        return jsonify({"response": "Unauthorized"}), 401
+
     user_query = request.json.get('query', '').strip()
     if not user_query:
         return jsonify({"response": "Please provide a query."}), 400
@@ -239,10 +240,6 @@ def chatbot():
     - If you recommend 2 or more cars, always follow up with: "Would you like me to open the search bar and show full details for these models? Just reply with 'yes'." This helps users quickly explore their options.
     """
 
-
-
-
-
     api_key = os.getenv("DEEPSEEK_API_KEY")
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -271,8 +268,6 @@ def chatbot():
         return jsonify({"response": response.json()["choices"][0]["message"]["content"].strip()}), 200
 
     return jsonify({"response": "Sorry, I couldn't get a response from the chatbot. Please try again later."}), 500
-
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

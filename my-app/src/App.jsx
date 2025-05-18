@@ -22,7 +22,7 @@ function App() {
     setShowSearch(true);
   };
 
-  const showChatBot = location.pathname !== "/login" && location.pathname !== "/SignUp";
+  const showChatBot = location.pathname !== "/login" && location.pathname !== "/Login" && location.pathname !== "/SignUp";
 
   return (
     <>

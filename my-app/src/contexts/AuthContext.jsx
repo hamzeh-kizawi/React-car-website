@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
                 const data = await response.json();
                 setUser(data.user);
             } else if (response.status === 401) {
-                await tryRefreshToken(); //attempt to refresh if unauthorized
+                await tryRefreshToken();
             } else {
                 console.error("Unexpected error fetching user.");
             }
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
             if (response.ok) {
                 console.log("Token refreshed");
-                await fetchUser(); // fetch the user again after refreshing
+                await fetchUser();
             } else {
                 console.warn("Refresh token expired or invalid.");
                 setUser(null); 

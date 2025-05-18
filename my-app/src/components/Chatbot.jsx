@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
+import Cookies from "js-cookie";
 import "../css/Chatbot.css";
+import { useAuth } from "../contexts/AuthContext";
 
 const Chatbot = ({ onShowRecommendations }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showTeaser, setShowTeaser] = useState(false);
+    const [showWarning, setShowWarning] = useState(false);
     const [messages, setMessages] = useState([
         { text: "Hi there! Welcome to SpeedAI 🚗. How can I help you?", sender: "bot" }
     ]);
@@ -13,8 +16,11 @@ const Chatbot = ({ onShowRecommendations }) => {
     const [lastSuggestedCars, setLastSuggestedCars] = useState([]);
     const [carInventory, setCarInventory] = useState([]);
 
+    const csrfToken = Cookies.get("csrf_access_token");
+
     const inputRef = useRef(null);
     const bottomRef = useRef(null);
+    const { user } = useAuth();
 
     useEffect(() => {
         fetch("http://localhost:5000/cars")
@@ -44,6 +50,11 @@ const Chatbot = ({ onShowRecommendations }) => {
     }, [messages, isThinking]);
 
     const toggleChatbot = () => {
+        if (!user) {
+            setShowWarning(true);
+            setTimeout(() => setShowWarning(false), 4000);
+            return;
+        }
         setIsOpen(!isOpen);
         setShowTeaser(false);
     };
@@ -51,9 +62,9 @@ const Chatbot = ({ onShowRecommendations }) => {
     const extractCarNames = (text) => {
         const boldRegex = /\*\*(.*?)\*\*/g;
         const matches = [...text.matchAll(boldRegex)];
-    
+
         let extracted = matches.map(match => match[1].replace(/\s*\(\d{4}\)/, "").trim());
-    
+
         if (extracted.length === 0 && carInventory.length > 0) {
             for (const name of carInventory) {
                 if (text.includes(name)) {
@@ -61,25 +72,31 @@ const Chatbot = ({ onShowRecommendations }) => {
                 }
             }
         }
-    
+
         return extracted;
     };
 
     const sendMessage = async () => {
         const trimmedInput = userInput.trim();
         if (!trimmedInput || isThinking) return;
-    
+
+        if (!user) {
+            setMessages(prev => [
+                ...prev,
+                { text: "❌ You must be logged in or a guest to use the chatbot.", sender: "bot" }
+            ]);
+            return;
+        }
+
         setMessages(prev => [...prev, { text: trimmedInput, sender: "user" }]);
         setUserInput("");
-    
+
         if (trimmedInput.toLowerCase() === "yes") {
             if (lastSuggestedCars.length > 0) {
-                console.log("Opening search with saved suggestions:", lastSuggestedCars);
                 setMessages(prev => [...prev, { text: `Sure! Opening the search bar with those models now. 🚗`, sender: "bot" }]);
                 onShowRecommendations?.(lastSuggestedCars);
                 return;
             } else {
-                console.warn(" User said 'yes' but no car names were saved.");
                 setMessages(prev => [...prev, {
                     text: "Oops! I don't have any recent models saved to show. Could you repeat which type of car you're looking for? 😊",
                     sender: "bot"
@@ -87,30 +104,31 @@ const Chatbot = ({ onShowRecommendations }) => {
                 return;
             }
         }
-    
+
         setIsThinking(true);
         setLastSuggestedCars([]);
-    
+
         try {
             const response = await fetch("http://localhost:5000/chatbot", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
                 body: JSON.stringify({ query: trimmedInput })
             });
-    
+
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    
+
             const data = await response.json();
             const botResponse = data.response;
-    
+
             setMessages(prev => [...prev, { text: botResponse, sender: "bot" }]);
-    
+
             const cars = extractCarNames(botResponse);
-            console.log("🚗 Extracted car names:", cars);
-    
             if (cars.length >= 2) {
                 setLastSuggestedCars(cars);
-    
                 setMessages(prev => [
                     ...prev,
                     {
@@ -139,6 +157,12 @@ const Chatbot = ({ onShowRecommendations }) => {
             {showTeaser && !isOpen && (
                 <div className="chatbot-teaser">
                     👋 Hello there! I'm your SpeedAI Assistant. How can I help you today?
+                </div>
+            )}
+
+            {showWarning && (
+                <div className="chatbot-warning">
+                    ❌ You need to log in to use the chatbot.
                 </div>
             )}
 

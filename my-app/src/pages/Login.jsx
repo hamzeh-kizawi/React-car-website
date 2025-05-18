@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import "../css/Login.css";
@@ -14,7 +13,7 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(""); // Reset previous errors
+        setError("");
 
         try {
             const response = await fetch('http://localhost:5000/login', {
@@ -29,7 +28,7 @@ function Login() {
             const data = await response.json();
 
             if (response.ok) {
-                await fetchUser(); // Refresh user from token
+                await fetchUser();
                 navigate('/');
             } else {
                 setError(data.message || "Login failed");

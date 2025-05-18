@@ -10,6 +10,20 @@ export const CarDetails = ({ car, onClose }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscKey);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscKey);
+    };
+  }, [onClose]);
+
   if (!car) return null;
 
   return (
