@@ -33,7 +33,7 @@ const SearchBar = ({ onClose, filteredCarNames = [] }) => {
         }
       }
     };
-
+    //documentation test
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose, selectedCar]);
