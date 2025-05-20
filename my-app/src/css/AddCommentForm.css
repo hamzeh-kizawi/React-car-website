@@ -1,0 +1,81 @@
+.add-comment-form {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #444; 
+}
+
+.add-comment-form h3 {
+  color: #e0e0e0;
+  margin-bottom: 15px;
+  font-size: 1.3em;
+}
+
+.add-comment-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #33373f;
+  color: #e0e0e0;
+  font-size: 1em;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  min-height: 80px; 
+  resize: vertical; 
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-comment-form textarea:focus {
+  outline: none;
+  border-color: #61dafb;
+  box-shadow: 0 0 0 3px rgba(97, 218, 251, 0.2);
+}
+
+.add-comment-form button[type="submit"] {
+  background-color: #61dafb; 
+  color: #1e1e1e; 
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.add-comment-form button[type="submit"]:hover {
+  background-color: #52b8d8; 
+}
+.add-comment-form button[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+.add-comment-form button[type="submit"]:disabled {
+  background-color: #4a4a4a;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.error-message-comment-form {
+  color: #ff6b6b;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.add-comment-login-prompt {
+    margin-top: 30px;
+    padding: 15px;
+    text-align: center;
+    background-color: #2c2f33;
+    border: 1px solid #42464d;
+    border-radius: 8px;
+    color: #dcddde;
+}
+.add-comment-login-prompt a {
+    color: #61dafb;
+    text-decoration: underline;
+}
+.add-comment-login-prompt a:hover {
+    color: #52b8d8;
+}

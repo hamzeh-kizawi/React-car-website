@@ -44,7 +44,7 @@ function NavBar() {
                     <button onClick={() => scrollToSection("brands-section")} className="brands-page">
                         Brands
                     </button>
-                    <Link to="/my-list">My List</Link>
+                    <Link to="/discussions">Discussions</Link>
                 </div>
 
                 <div className="search" onClick={() => setShowSearch(true)}>

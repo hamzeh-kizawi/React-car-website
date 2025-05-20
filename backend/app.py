@@ -269,5 +269,324 @@ def chatbot():
 
     return jsonify({"response": "Sorry, I couldn't get a response from the chatbot. Please try again later."}), 500
 
+
+
+@app.route('/api/posts', methods=['POST'])
+@jwt_required()
+def create_post():
+    current_user_id = get_jwt_identity()
+    if current_user_id == "guest_user": 
+        return jsonify({"message": "Guests are not allowed to create posts"}), 403
+
+    data = request.get_json()
+    car_id = data.get('car_id')
+    title = data.get('title')
+    content = data.get('content')
+
+    if not car_id or not content:
+        return jsonify({"message": "Car ID and content are required"}), 400
+
+    db = None
+    cursor = None
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+
+
+        cursor.execute("SELECT id FROM cars WHERE id = %s", (car_id,))
+        if cursor.fetchone() is None:
+            if cursor: cursor.close()
+            if db: db.close()
+            return jsonify({"message": "Invalid Car ID"}), 404
+
+        
+
+        query = "INSERT INTO posts (user_id, car_id, title, content) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (current_user_id, car_id, title, content))
+        db.commit()
+        new_post_id = cursor.lastrowid
+
+        if new_post_id is None : 
+             print(f"Error: lastrowid is None after inserting post for user {current_user_id}")
+             return jsonify({"message": "Error creating post, failed to get new post ID"}), 500
+
+
+        cursor.execute("""
+            SELECT p.id, p.user_id, u.username, p.car_id, c.name as car_name, c.image as car_image,
+                   p.title, p.content, p.created_at, p.updated_at
+            FROM posts p
+            JOIN users u ON p.user_id = u.id
+            JOIN cars c ON p.car_id = c.id
+            WHERE p.id = %s
+        """, (new_post_id,))
+        new_post = cursor.fetchone()
+        
+        if not new_post:
+            print(f"Error: Could not fetch newly created post with ID {new_post_id}")
+            return jsonify({"message": "Post created but could not be retrieved"}), 500
+
+        return jsonify({"message": "Post created successfully", "post": new_post}), 201
+
+    except mysql.connector.Error as err:
+        print(f"Database Error creating post: {err}")
+        return jsonify({"message": "Database error"}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if db:
+            db.close()
+
+
+@app.route('/api/posts', methods=['GET'])
+def get_all_posts():
+    db = None
+    cursor = None
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+
+        query = """
+            SELECT
+                p.id, p.user_id, u.username, p.car_id, c.name AS car_name, c.image AS car_image,
+                p.title, p.content, p.created_at, p.updated_at,
+                (SELECT COUNT(*) FROM comments cm WHERE cm.post_id = p.id) AS comments_count
+            FROM posts p
+            JOIN users u ON p.user_id = u.id
+            JOIN cars c ON p.car_id = c.id
+            ORDER BY p.created_at DESC
+        """
+
+        cursor.execute(query)
+        posts = cursor.fetchall()
+        return jsonify(posts), 200
+
+    except mysql.connector.Error as err:
+        print(f"Database Error fetching posts: {err}")
+        return jsonify({"message": "Database error"}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if db:
+            db.close()
+
+@app.route('/api/posts/<int:post_id>', methods=['GET'])
+def get_single_post(post_id):
+    db = None
+    cursor = None
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+
+        post_query = """
+            SELECT p.id, p.user_id, u.username, p.car_id, c.name AS car_name, c.image AS car_image,
+                   p.title, p.content, p.created_at, p.updated_at
+            FROM posts p
+            JOIN users u ON p.user_id = u.id
+            JOIN cars c ON p.car_id = c.id
+            WHERE p.id = %s
+        """
+        cursor.execute(post_query, (post_id,))
+        post = cursor.fetchone()
+
+        if not post:
+            return jsonify({"message": "Post not found"}), 404
+
+        comments_query = """
+            SELECT cm.id, cm.user_id, u.username, cm.content, cm.created_at, cm.updated_at
+            FROM comments cm
+            JOIN users u ON cm.user_id = u.id
+            WHERE cm.post_id = %s
+            ORDER BY cm.created_at ASC
+        """
+        cursor.execute(comments_query, (post_id,))
+        comments = cursor.fetchall()
+
+        post["comments"] = comments
+        return jsonify(post), 200
+
+    except mysql.connector.Error as err:
+        print(f"Database Error fetching single post: {err}")
+        return jsonify({"message": "Database error"}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if db:
+            db.close()
+
+
+@app.route('/api/posts/<int:post_id>/comments', methods=['POST'])
+@jwt_required()
+def create_comment(post_id):
+    current_user_id = get_jwt_identity()
+    if current_user_id == "guest_user":
+        return jsonify({"message": "Guests are not allowed to comment"}), 403
+
+    data = request.get_json()
+    content = data.get('content')
+
+    if not content:
+        return jsonify({"message": "Comment content is required"}), 400
+
+    db = None
+    cursor = None
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True) 
+        cursor.execute("SELECT id FROM posts WHERE id = %s", (post_id,))
+        if cursor.fetchone() is None:
+            return jsonify({"message": "Post not found"}), 404
+
+        query = "INSERT INTO comments (post_id, user_id, content) VALUES (%s, %s, %s)"
+        cursor.execute(query, (post_id, current_user_id, content))
+        db.commit()
+        new_comment_id = cursor.lastrowid
+
+
+        cursor.execute("""
+            SELECT cm.id, cm.post_id, cm.user_id, u.username, cm.content, cm.created_at, cm.updated_at
+            FROM comments cm
+            JOIN users u ON cm.user_id = u.id
+            WHERE cm.id = %s
+        """, (new_comment_id,))
+        new_comment_data = cursor.fetchone()
+
+        return jsonify({"message": "Comment created successfully", "comment": new_comment_data}), 201
+
+    except mysql.connector.Error as err:
+        print(f"Database Error creating comment: {err}")
+        return jsonify({"message": "Database error"}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if db:
+            db.close()
+
+
+@app.route('/api/posts/<int:post_id>', methods=['PUT'])
+@jwt_required()
+def update_post(post_id):
+    current_user_id = get_jwt_identity()
+    if current_user_id == "guest_user":
+        return jsonify({"message": "Guests are not allowed to edit posts"}), 403
+
+    data = request.get_json()
+    title = data.get('title')      
+    content = data.get('content')   
+    car_id = data.get('car_id')     
+
+    if not title and not content and not car_id:
+        return jsonify({"message": "No update data provided (title, content, or car_id)"}), 400
+
+    db = None
+    cursor = None
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+
+        cursor.execute("SELECT user_id FROM posts WHERE id = %s", (post_id,))
+        post_data = cursor.fetchone()
+
+        if not post_data:
+            return jsonify({"message": "Post not found"}), 404
+
+        if post_data['user_id'] != current_user_id:
+            return jsonify({"message": "Forbidden: You are not the author of this post"}), 403
+
+        if car_id:
+            cursor.execute("SELECT id FROM cars WHERE id = %s", (car_id,))
+            if cursor.fetchone() is None:
+                return jsonify({"message": "Invalid new Car ID"}), 404
+
+        update_fields = []
+        update_values = []
+
+        if title is not None:
+            update_fields.append("title = %s")
+            update_values.append(title)
+        if content is not None: 
+            update_fields.append("content = %s")
+            update_values.append(content)
+        if car_id:
+            update_fields.append("car_id = %s")
+            update_values.append(car_id)
+
+        if not update_fields: 
+            return jsonify({"message": "No valid fields to update"}), 400
+
+        update_fields.append("updated_at = CURRENT_TIMESTAMP") 
+
+        query = f"UPDATE posts SET {', '.join(update_fields)} WHERE id = %s"
+        update_values.append(post_id)
+
+        cursor.execute(query, tuple(update_values))
+        db.commit()
+
+        if cursor.rowcount == 0:
+            pass
+
+
+        cursor.execute("""
+            SELECT p.id, p.user_id, u.username, p.car_id, c.name as car_name, c.image as car_image,
+                   p.title, p.content, p.created_at, p.updated_at
+            FROM posts p
+            JOIN users u ON p.user_id = u.id
+            JOIN cars c ON p.car_id = c.id
+            WHERE p.id = %s
+        """, (post_id,))
+        updated_post = cursor.fetchone()
+
+        return jsonify({"message": "Post updated successfully", "post": updated_post}), 200
+
+    except mysql.connector.Error as err:
+        print(f"Database Error updating post: {err}")
+        return jsonify({"message": "Database error"}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if db:
+            db.close()
+
+
+
+@app.route('/api/posts/<int:post_id>', methods=['DELETE'])
+@jwt_required()
+def delete_post(post_id):
+    current_user_id = get_jwt_identity()
+    if current_user_id == "guest_user":
+        return jsonify({"message": "Guests are not allowed to delete posts"}), 403
+
+    db = None
+    cursor = None
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True) 
+
+        cursor.execute("SELECT user_id FROM posts WHERE id = %s", (post_id,))
+        post_data = cursor.fetchone()
+
+        if not post_data:
+            return jsonify({"message": "Post not found"}), 404
+
+        if post_data['user_id'] != current_user_id:
+            return jsonify({"message": "Forbidden: You are not the author of this post"}), 403
+
+        cursor.execute("DELETE FROM posts WHERE id = %s", (post_id,))
+        db.commit()
+
+        if cursor.rowcount == 0:
+            return jsonify({"message": "Post not found or already deleted"}), 404
+
+        return jsonify({"message": "Post deleted successfully"}), 200 
+
+    except mysql.connector.Error as err:
+        print(f"Database Error deleting post: {err}")
+        return jsonify({"message": "Database error"}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if db:
+            db.close()
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

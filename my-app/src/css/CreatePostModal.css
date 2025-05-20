@@ -1,0 +1,139 @@
+.modal-overlay-create-post {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content-create-post {
+  background-color: #282c34;
+  padding: 30px 35px 35px; 
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55); 
+  width: 100%;
+  max-width: 500px; 
+  position: relative;
+  color: #e0e0e0;
+  border: 1px solid #4a4a4a;
+  text-align: left; 
+}
+
+.modal-content-create-post h2 {
+  margin-top: 0;
+  margin-bottom: 30px; 
+  color: #61dafb;
+  text-align: center;
+  font-size: 1.7em; 
+  font-weight: 600;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+.modal-close-btn:hover {
+  color: #fff;
+}
+
+
+.modal-content-create-post form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; 
+}
+
+.form-group-create-post {
+  text-align: center; 
+}
+
+.form-group-create-post label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #c0c0c0;
+  font-size: 0.95em;
+}
+
+.form-group-create-post input[type="text"],
+.form-group-create-post select,
+.form-group-create-post textarea {
+  width: 100%; 
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #33373f;
+  color: #e0e0e0;
+  font-size: 1em;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group-create-post input[type="text"]:focus,
+.form-group-create-post select:focus,
+.form-group-create-post textarea:focus {
+  outline: none;
+  border-color: #61dafb;
+  box-shadow: 0 0 0 3px rgba(97, 218, 251, 0.2);
+}
+
+.form-group-create-post select {
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20fill%3D%22%23c0c0c0%22%20d%3D%22M7%2010l5%205%205-5H7z%22/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 18px;
+}
+
+.submit-post-btn {
+  background-color: #61dafb;
+  color: #1e1e1e;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  width: 100%;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 10px; 
+}
+
+.submit-post-btn:hover {
+  background-color: #52b8d8;
+}
+.submit-post-btn:active {
+  transform: scale(0.98);
+}
+
+.submit-post-btn:disabled {
+  background-color: #4a4a4a;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.error-message-form {
+  color: #ff6b6b;
+  font-size: 0.9em;
+  margin-bottom: 0; 
+  text-align: center;
+  background-color: rgba(255, 107, 107, 0.1);
+  padding: 8px;
+  border-radius: 4px;
+}

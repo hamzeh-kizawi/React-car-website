@@ -10,11 +10,12 @@ import SearchBar from './components/SearchBar';
 import './App.css';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import DiscussionPage from './pages/DiscussionPage';
+import PostDetailPage from './pages/PostDetailPage'; 
 
 function App() {
   const [showSearch, setShowSearch] = useState(false);
   const [filteredCarNames, setFilteredCarNames] = useState([]);
-
   const location = useLocation();
 
   const handleShowRecommendations = (carNames) => {
@@ -22,16 +23,23 @@ function App() {
     setShowSearch(true);
   };
 
-  const showChatBot = location.pathname !== "/login" && location.pathname !== "/Login" && location.pathname !== "/SignUp";
+  const hideChatBotOnPages = ['/login', '/signup', '/discussions']; 
+  
+  const showChatBotOnPage = !hideChatBotOnPages.some(path => location.pathname.toLowerCase().startsWith(path)) &&
+                           !location.pathname.toLowerCase().startsWith('/discussions/'); // 
+
+  const showNavBar = location.pathname === '/';
+
 
   return (
     <>
+      {showNavBar && <NavBar />}
+
       <Routes>
         <Route
           path='/'
           element={
             <>
-              <NavBar />
               <Home />
               <AboutUs />
               <Brands />
@@ -40,14 +48,17 @@ function App() {
           }
         />
         <Route path='/login' element={<Login />} />
-        <Route path='/SignUp' element={<SignUp />} />
+        <Route path='/signup' element={<SignUp />} />
+        <Route path='/discussions' element={<DiscussionPage />} />
+        <Route path='/discussions/:postId' element={<PostDetailPage />} />
+
       </Routes>
 
-      {showChatBot && (
+      {showChatBotOnPage && (
         <Chatbot onShowRecommendations={handleShowRecommendations} />
       )}
 
-      {showSearch && (
+      {showSearch && location.pathname === '/' && (
         <SearchBar
           onClose={() => setShowSearch(false)}
           filteredCarNames={filteredCarNames}
