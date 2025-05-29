@@ -100,3 +100,30 @@ label {
 .sign-up-footer a:hover {
   text-decoration: underline;
 }
+
+
+.error-message-signup {
+  color: #D8000C;
+  background-color: #FFD2D2; 
+  border: 1px solid #D8000C;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  text-align: center;
+  width: 100%;
+  max-width: 350px;
+  box-sizing: border-box;
+}
+
+.success-message-signup {
+  color: #270; 
+  background-color: #DFF2BF; 
+  border: 1px solid #4F8A10;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  text-align: center;
+  width: 100%;
+  max-width: 350px;
+  box-sizing: border-box;
+}

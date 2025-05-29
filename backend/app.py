@@ -92,21 +92,63 @@ def get_cars():
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    username = data['username']
-    email = data['email']
-    password = data['password']
+    username = data.get('username') 
+    email = data.get('email')
+    password = data.get('password')
 
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    if not username or not email or not password:
+        return jsonify({"message": "Username, email, and password are required"}), 400
 
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute("INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)",
-                  (username, email, hashed_password))
-    db.commit()
-    cursor.close()
-    db.close()
+    db = None
+    cursor = None
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        existing_user = cursor.fetchone()
 
-    return jsonify({"message": "User registered successfully"}), 201
+        if existing_user:
+            cursor.close()
+            db.close()
+            return jsonify({"message": "Email already registered. Please use a different email or login."}), 409 
+
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+
+    except mysql.connector.Error as err: 
+        print(f"Database Error during email check: {err}")
+        if cursor: cursor.close()
+        if db: db.close()
+        return jsonify({"message": "Database error during registration process"}), 500
+
+    db_conn = None 
+    cursor = None
+    try:
+        db_conn = get_db()
+        cursor = db_conn.cursor(dictionary=True)
+        cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
+        if cursor.fetchone():
+            return jsonify({"message": "Email already registered. Please use a different email or login."}), 409
+        cursor.execute("SELECT id FROM users WHERE username = %s", (username,))
+        if cursor.fetchone():
+            return jsonify({"message": "Username already taken. Please choose another."}), 409
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        cursor_insert = db_conn.cursor() 
+        cursor_insert.execute("INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)",
+                              (username, email, hashed_password))
+        db_conn.commit()
+        cursor_insert.close()
+
+        return jsonify({"message": "User registered successfully"}), 201
+
+    except mysql.connector.Error as err:
+        print(f"Database Error during registration: {err}")
+        return jsonify({"message": "Registration failed due to a database error."}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if db_conn:
+            db_conn.close()
 
 @app.route('/login', methods=['POST'])
 def login():
