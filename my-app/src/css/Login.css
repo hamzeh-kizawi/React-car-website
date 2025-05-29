@@ -135,3 +135,65 @@ label {
   max-width: 350px;
   box-sizing: border-box;
 }
+
+
+@media (max-width: 1024px) {
+  .login-content {
+    padding: 30px; 
+  }
+}
+
+
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    height: auto; 
+    min-height: 100vh;
+    align-items: stretch; 
+
+  }
+
+  
+
+  .image-container {
+    display: none;
+  }
+
+  .login-content {
+    flex: 1; 
+    width: 100%;
+    padding: 25px;
+    justify-content: center; 
+    align-items: center; 
+    min-height: calc(100vh - /* estimated height of BackToMainScreen if any */ 0px);
+  }
+
+  .login-content h1 {
+    font-size: 24px;
+    margin-top: 0; 
+    margin-bottom: 20px; 
+  }
+
+  form,
+  .guest-container,
+  .error-message {
+    max-width: 380px; 
+    width: 90%;
+    padding-left: 0; 
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+ @media (max-width: 480px) {
+  .image-container {
+    display: none;
+  }
+  .login-content {
+    justify-content: center;
+    min-height: calc(100vh - 0);
+  }
+ }  
+

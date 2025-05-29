@@ -7,7 +7,7 @@
   gap: 8px;
   padding: 10px 20px;
   border-radius: 50px;
-  color: white;
+  color: rgb(243, 243, 243);
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -34,7 +34,7 @@
   text-transform: uppercase;
 }
 
-/* For smaller screens */
+
 @media screen and (max-width: 600px) {
   .back-to-main-screen {
     top: 10px;
@@ -46,4 +46,14 @@
   .back-icon {
     font-size: 20px;
   }
+  .back-to-main-screen{
+    color: black;
+  }
 }
+
+@media (max-width: 768px){
+  .back-to-main-screen{
+    color: black;
+  }
+}
+
