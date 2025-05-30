@@ -94,10 +94,6 @@
 
 
 @media (max-width: 768px) {
-  .flex-info {
-    flex-direction: column;
-  }
-
   .car-details-model {
     padding: 15px;
   }
@@ -115,3 +111,6 @@
     font-size: 13px;
   }
 }
+
+
+

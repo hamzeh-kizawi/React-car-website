@@ -36,7 +36,6 @@
   color: rgb(210, 52, 52);
 }
 
-
 .contactUs-form {
   width: 100%;
 }
@@ -47,7 +46,7 @@
   margin-bottom: 15px;
 }
 
-.contactUs-form label{
+.contactUs-form label {
   font-size: 18px;
 }
 
@@ -115,3 +114,60 @@
   border-radius: 10px;
 }
 
+@media screen and (max-width: 1360px) {
+  .contactUs-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contactUs-left-side {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-group,
+  .phone-email-container,
+  .message-submit {
+    width: 100% !important;
+  }
+
+  .phone-email-container {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .contactUs-right-side {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .contactUs-content {
+    padding: 20px 10px;
+  }
+
+  .contactUs-texts h2 {
+    font-size: 28px;
+  }
+
+  .contactUs-texts p {
+    font-size: 16px;
+  }
+
+  .contactUs-form h4 {
+    font-size: 20px;
+  }
+
+  .contactUs-form label {
+    font-size: 15px;
+  }
+
+  .contactUs-input-style,
+  .contactUs-textArea,
+  .message-submit {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

@@ -38,6 +38,7 @@
 .content {
   position: relative;
   z-index: 1;
+  margin-bottom: 20px;
 }
 
 
@@ -74,4 +75,34 @@ button .arrow {
 
 button:hover .arrow {
   transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+  .content h1 {
+    font-size: 48px; /* Adjust font size for tablets/mobile */
+  }
+
+  .content p {
+    font-size: 22px; /* Adjust font size */
+  }
+
+  .content button {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content h1 {
+    font-size: 36px; /* Further adjust for small mobile */
+  }
+
+  .content p {
+    font-size: 18px; /* Further adjust */
+  }
+
+  .content button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
 }

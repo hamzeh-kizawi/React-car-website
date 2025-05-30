@@ -24,7 +24,7 @@ export default function Cars({ brand }) {
     mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
   };
 
-  // Filter cars by brand
+  
   const filteredCars = cars.filter((car) => car.brand === brand);
 
   return (

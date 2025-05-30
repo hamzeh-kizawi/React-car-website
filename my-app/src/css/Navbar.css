@@ -143,3 +143,37 @@
 .username-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
+@media screen and (max-width: 768px) {
+  .home-page,
+  .brands-page {
+    display: none;
+  }
+
+  .navbar {
+    padding: 20px;
+  }
+
+  .navbar.scrolled {
+    padding: 10px 20px;
+  }
+
+  .search {
+    width: 150px;
+    height: 36px;
+  }
+
+  .navbar-links {
+    gap: 16px;
+  }
+
+  .username-button {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  .login .login-button {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+}
