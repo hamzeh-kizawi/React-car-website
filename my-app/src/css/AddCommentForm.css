@@ -27,13 +27,13 @@
 
 .add-comment-form textarea:focus {
   outline: none;
-  border-color: #61dafb;
+  border-color: rgb(210, 52, 52);
   box-shadow: 0 0 0 3px rgba(97, 218, 251, 0.2);
 }
 
 .add-comment-form button[type="submit"] {
-  background-color: #61dafb; 
-  color: #1e1e1e; 
+  background-color: rgb(210, 52, 52); 
+  color: #ffffff; 
   padding: 10px 20px;
   border: none;
   border-radius: 20px;
@@ -44,7 +44,7 @@
 }
 
 .add-comment-form button[type="submit"]:hover {
-  background-color: #52b8d8; 
+  background-color: rgb(221, 80, 80); 
 }
 .add-comment-form button[type="submit"]:active {
   transform: scale(0.98);
@@ -73,9 +73,9 @@
     color: #dcddde;
 }
 .add-comment-login-prompt a {
-    color: #61dafb;
+    color: rgb(210, 52, 52);
     text-decoration: underline;
 }
 .add-comment-login-prompt a:hover {
-    color: #52b8d8;
+    color: rgb(224, 79, 79);
 }

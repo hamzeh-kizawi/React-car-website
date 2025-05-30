@@ -79,11 +79,11 @@ button:hover .arrow {
 
 @media (max-width: 768px) {
   .content h1 {
-    font-size: 48px; /* Adjust font size for tablets/mobile */
+    font-size: 48px; 
   }
 
   .content p {
-    font-size: 22px; /* Adjust font size */
+    font-size: 22px;
   }
 
   .content button {
@@ -94,11 +94,11 @@ button:hover .arrow {
 
 @media (max-width: 480px) {
   .content h1 {
-    font-size: 36px; /* Further adjust for small mobile */
+    font-size: 36px;
   }
 
   .content p {
-    font-size: 18px; /* Further adjust */
+    font-size: 18px;
   }
 
   .content button {

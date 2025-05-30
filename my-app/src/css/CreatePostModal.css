@@ -29,7 +29,7 @@
 .modal-content-create-post h2 {
   margin-top: 0;
   margin-bottom: 30px; 
-  color: #61dafb;
+  color: #ffffff;
   text-align: center;
   font-size: 1.7em; 
   font-weight: 600;
@@ -89,7 +89,7 @@
 .form-group-create-post select:focus,
 .form-group-create-post textarea:focus {
   outline: none;
-  border-color: #61dafb;
+  border-color: rgb(210, 52, 52);
   box-shadow: 0 0 0 3px rgba(97, 218, 251, 0.2);
 }
 
@@ -102,8 +102,8 @@
 }
 
 .submit-post-btn {
-  background-color: #61dafb;
-  color: #1e1e1e;
+  background-color: rgb(210, 52, 52);
+  color: #ffffff;
   padding: 12px 20px;
   border: none;
   border-radius: 25px;
@@ -116,7 +116,7 @@
 }
 
 .submit-post-btn:hover {
-  background-color: #52b8d8;
+  background-color: rgb(226, 75, 75);
 }
 .submit-post-btn:active {
   transform: scale(0.98);

@@ -15,10 +15,6 @@ const CommentItem = ({ comment }) => {
         </span>
       </div>
       <p className="comment-content">{comment.content}</p>
-      {/* Placeholder for future actions like reply, edit, delete for comments */}
-      {/* <div className="comment-actions">
-        <button>Reply</button>
-      </div> */}
     </div>
   );
 };

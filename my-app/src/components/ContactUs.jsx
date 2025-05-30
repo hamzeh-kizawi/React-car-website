@@ -87,7 +87,7 @@ function ContactUs() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     onInput={(e) => {
-                      e.target.value = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
                     }}
                     required
                   />

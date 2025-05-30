@@ -79,7 +79,7 @@
 
 .post-summary-card-placeholder h2 {
   margin-top: 0;
-  color: #00aaff;
+  color: rgb(210, 52, 52);
   font-size: 1.3em;
 }
 
@@ -111,7 +111,7 @@
 }
 
 .discussion-login-button {
-  background-color: #007bff;
+  background-color: rgb(210, 52, 52);
   color: white;
   padding: 8px 15px;
   border: none;
@@ -124,5 +124,5 @@
 }
 
 .discussion-login-button:hover {
-  background-color: #0056b3;
+  background-color: rgb(233, 88, 88);
 }

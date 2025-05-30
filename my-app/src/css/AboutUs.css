@@ -1,9 +1,8 @@
-/* Original styles from your AboutUs.css with corrections and enhancements */
 .aboutUs-container {
   width: 100%;
-  min-height: 120vh; /* Adjusted from 120vh for better fit, can be reverted if needed */
+  min-height: 120vh;
   background-color: white;
-  padding: 40px 20px; /* Added some padding */
+  padding: 40px 20px; 
   box-sizing: border-box;
 }
 
@@ -13,11 +12,11 @@
   text-align: center;
   justify-content: center;
   align-items: center;
-  margin-bottom: 40px; /* Added space before the next section */
+  margin-bottom: 40px; 
 }
 
 .header {
-  margin-top: 60px; /* Adjusted from 100px */
+  margin-top: 60px; 
   margin-bottom: 20px;
   font-size: 34px;
   font-weight: bold;
@@ -29,9 +28,9 @@
 
 .mid-text {
   max-width: 750px;
-  margin-bottom: 30px; /* Adjusted margin */
-  font-weight: 400;  /* Corrected from font-size: 400 */
-  font-size: 18px;  /* Added a sensible font-size */
+  margin-bottom: 30px; 
+  font-weight: 400;  
+  font-size: 18px;  
   color: #706f6f;
   line-height: 1.6;
 }
@@ -39,59 +38,55 @@
 .last-text {
   margin-bottom: 40px;
   color: #464646;
-  font-size: 16px; /* Added a sensible font-size */
+  font-size: 16px; 
 }
 
 .aboutUs-info {
   display: flex;
-  justify-content: space-around; /* On larger screens, image and info are spread */
+  justify-content: space-around; 
   align-items: center;
-  flex-wrap: wrap; /* Allow wrapping if space is tight before mobile breakpoint */
-  gap: 30px; /* Add gap between image and info block */
+  flex-wrap: wrap; 
+  gap: 30px; 
 }
 
 .about-us-car-image {
-  flex: 1 1 500px; /* Flex properties for responsiveness */
-  max-width: 650px; /* Ensure it doesn't get too large */
-  text-align: center; /* Center the image if its container is wider */
+  flex: 1 1 500px;
+  max-width: 650px; 
+  text-align: center;
 }
 
 .about-us-car-image img {
-  width: 100%; /* Make image responsive within its container */
-  height: auto; /* Maintain aspect ratio */
-  /* Animation properties - keep as is if you like the effect */
+  width: 100%; 
+  height: auto; 
   transform: scale(0.5) translateY(100px);
   opacity: 0;
-  /* z-index: -1; /* Usually not needed unless complex layering */
   transition: transform 1s ease-out, opacity 1s ease-out;
-  border-radius: 8px; /* Optional: add some rounding to image */
+  border-radius: 8px;
 }
 
 .about-us-car-image.animate img {
   transform: scale(1) translateY(0);
   opacity: 1;
-  /* z-index: 1; */
 }
 
 .information {
-  flex: 1 1 400px; /* Flex properties for responsiveness */
+  flex: 1 1 400px; 
   display: flex;
-  justify-content: center; /* Center the two columns of stats */
-  align-items: flex-start; /* Align columns to the top */
-  gap: 30px; /* Reduced column-gap */
-  flex-wrap: wrap; /* Allow stat columns to wrap if needed */
-  max-width: 600px; /* Max width for the information block */
-  margin: 0 auto; /* Helps in centering when it's the only item */
+  justify-content: center; 
+  align-items: flex-start;
+  gap: 30px; 
+  flex-wrap: wrap; 
+  max-width: 600px; 
+  margin: 0 auto; 
 }
 
-/* Assuming .left-side-info and .right-side-info wrap two cards each */
-/* If not, and .information directly contains the four cards, adjust selector */
+
 .left-side-info, .right-side-info {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Space between cards in a column */
-    flex: 1; /* Allow columns to share space */
-    min-width: 200px; /* Min width for a column of stats */
+    gap: 20px; 
+    flex: 1;
+    min-width: 200px;
 }
 
 .information .numbers {
@@ -102,7 +97,7 @@
 }
 
 .information p {
-  font-size: 18px; /* Adjusted for consistency */
+  font-size: 18px; 
   font-weight: 500;
   color: black;
 }
@@ -110,16 +105,15 @@
 .left-side-first, .left-side-second,
 .right-side-first, .right-side-second {
   background-color: white;
-  margin-bottom: 20px; /* Reduced margin, gap on parent handles more */
+  margin-bottom: 20px; 
   padding: 20px 30px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 10px;
   transition: all 0.3s ease;
-  width: 100%; /* Make cards take full width of their column parent */
+  width: 100%; 
   box-sizing: border-box;
 }
 
-/* Hover effects - kept as per your original */
 .left-side-first:hover, .left-side-second:hover,
 .right-side-first:hover, .right-side-second:hover {
   color: white;
@@ -132,9 +126,9 @@
   color: white;
 }
 
-/* --- Responsive Adjustments --- */
 
-@media (max-width: 992px) { /* Tablets and below */
+
+@media (max-width: 992px) { 
   .aboutUs-texts .header {
     font-size: 30px;
   }
@@ -145,47 +139,37 @@
     font-size: 15px;
   }
 
-  /* Stack image and info earlier if needed, or let flex-wrap handle it.
-     If direct stacking is preferred:
-  .aboutUs-info {
-    flex-direction: column;
-    align-items: center;
-  }
-  .about-us-car-image {
-    margin-bottom: 30px;
-  }
-  */
 }
 
-@media (max-width: 768px) { /* Small tablets and mobile */
+@media (max-width: 768px) { 
   .aboutUs-container {
-    min-height: auto; /* Allow content to define height */
+    min-height: auto; 
   }
   .about-us-car-image {
-    display: none; /* Hide the car image as requested */
+    display: none; 
   }
 
   .aboutUs-info {
-    justify-content: center; /* Center the .information block now that image is gone */
+    justify-content: center; 
   }
 
   .information {
-    flex-direction: column; /* Stack the two stat columns (.left-side-info and .right-side-info) */
-    align-items: center; /* Center the stacked columns */
-    gap: 0; /* Reset gap, individual card margins will handle spacing */
+    flex-direction: column;
+    align-items: center; 
+    gap: 0; 
     width: 100%;
-    max-width: 350px; /* Max width for the centered stats block */
+    max-width: 350px; 
   }
 
   .left-side-info, .right-side-info {
-    width: 100%; /* Make stat columns take full width of the centered .information block */
-    align-items: center; /* Center cards within their column */
+    width: 100%; 
+    align-items: center;
   }
 
   .left-side-first, .left-side-second,
   .right-side-first, .right-side-second {
-    margin-bottom: 20px; /* Ensure space between stacked cards */
-    width: 90%; /* Make cards slightly less than full width of their column */
+    margin-bottom: 20px;
+    width: 90%;
     max-width: 300px;
   }
 
@@ -197,7 +181,7 @@
   }
 }
 
-@media (max-width: 480px) { /* Very small screens */
+@media (max-width: 480px) { 
   .aboutUs-texts .header {
     font-size: 26px;
     margin-top: 20px;
@@ -212,7 +196,7 @@
   .left-side-first, .left-side-second,
   .right-side-first, .right-side-second {
     padding: 15px 20px;
-    width: 100%; /* Full width on smallest screens */
+    width: 100%; 
   }
   .information .numbers {
     font-size: 24px;
