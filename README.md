@@ -1,23 +1,6 @@
 React & Flask Car Dealership Website (SpeedAI)
 
-This is a full-stack web application for a car dealership, featuring a rich user interface, a complete backend API, and an integrated AI chatbot for customer assistance
-
-Features
--Car Showcase: Browse and search through a detailed inventory of cars.
--User Authentication: Secure user registration and login system using JWT (JSON Web Tokens)
--Discussion Forum: Authenticated users can create, edit, and delete posts, and comment on discussions
--AI Chatbot: An intelligent chatbot (powered by DeepSeek) to answer user questions about the car inventory
--Contact Form: Integrated EmailJS form for users to send messages directly
--RESTful API: A well-structured Flask backend serving data to the frontend
-Tech Stack
--Frontend: React (with Vite)
--Backend: Flask (Python), mysql-connector-python
--Database: MySQL
--External APIs:
--DeepSeek AI for the chatbot
--EmailJS for the contact form
-
-Prerequisites
+Prerequisites:
 
 Before you begin, you need to have some software installed on your computer:
 
@@ -37,7 +20,7 @@ Download MySQL Workbench (https://dev.mysql.com/downloads/workbench/)
 
 Setup Instructions:
 
-Follow these steps carefully to get the project running on your local machine.
+Follow these steps carefully to get the project running on your local machine:
 
 1. Clone the Repository
    First, download the project files to your computer.
@@ -47,7 +30,7 @@ cd React-car-website
 
 2. API Key Setup (!!!Important!!!)
 
-You need to get API keys from two external services for the project to be fully functional.:
+You need to get API keys from two external services for the project to be fully functional:
 
 -EmailJS (for the contact form):
 
@@ -112,7 +95,7 @@ Keep this terminal open. The backend is now running at http://127.0.0.1:5000.
 
 4. Frontend Setup
 
-This part sets up the user interface.
+This part sets up the user interface:
 
 Open a new terminal. Navigate to the frontend folder:
 
@@ -128,13 +111,13 @@ Configure your secret keys:
 In the my-app folder, create a copy of .env.example and name it .env.
 
 Open the new .env file and fill in your EmailJS credentials:
-Ini, TOML
 
 VITE_EMAILJS_SERVICE_ID=your_service_id # Paste from EmailJS
 VITE_EMAILJS_TEMPLATE_ID=your_template_id # Paste from EmailJS
 VITE_EMAILJS_PUBLIC_KEY=your_public_key # Paste from EmailJS
+
 Run the Frontend App:
 
 npm run dev
 
-The React application will now be running. Your browser should open to http://localhost:5173. You can now use the website!
+The React application will now be running. Your browser should open to http://localhost:5173
