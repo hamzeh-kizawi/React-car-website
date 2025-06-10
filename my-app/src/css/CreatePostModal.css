@@ -23,7 +23,11 @@
   position: relative;
   color: #e0e0e0;
   border: 1px solid #4a4a4a;
-  text-align: left; 
+  text-align: center; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
 }
 
 .modal-content-create-post h2 {
@@ -56,11 +60,17 @@
 .modal-content-create-post form {
   display: flex;
   flex-direction: column;
+  align-items: center;  
   gap: 20px; 
+  width: 100%;
 }
 
 .form-group-create-post {
-  text-align: center; 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .form-group-create-post label {

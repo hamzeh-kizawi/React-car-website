@@ -5,7 +5,7 @@ import Home from './components/Home';
 import Brands from './components/Brands';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/ContactUs';
-import Chatbot from './components/ChatBot';
+import Chatbot from './components/Chatbot';
 import SearchBar from './components/SearchBar';
 import './App.css';
 import Login from './pages/Login';
@@ -26,7 +26,7 @@ function App() {
   const hideChatBotOnPages = ['/login', '/signup', '/discussions']; 
   
   const showChatBotOnPage = !hideChatBotOnPages.some(path => location.pathname.toLowerCase().startsWith(path)) &&
-                           !location.pathname.toLowerCase().startsWith('/discussions/'); // 
+                           !location.pathname.toLowerCase().startsWith('/discussions/'); 
 
   const showNavBar = location.pathname === '/';
 

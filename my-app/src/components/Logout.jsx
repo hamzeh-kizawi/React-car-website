@@ -33,7 +33,6 @@ function Logout({ onClose }) {
             console.error("An error occurred during logout:", error);
         }
     };
-
     return (
         <div className="logout-overlay">
             <div className="logout-modal">

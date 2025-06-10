@@ -27,19 +27,19 @@ const EditPostModal = ({ isOpen, onClose, postToEdit, onPostUpdated }) => {
     setIsSubmitting(true);
 
     if (!selectedCarId) {
-      setError('Please select a car.');
+      setError('Please select a car');
       setIsSubmitting(false);
       return;
     }
     if (!content.trim()) {
-      setError('Content cannot be empty.');
+      setError('Content cannot be empty');
       setIsSubmitting(false);
       return;
     }
 
     const csrfToken = Cookies.get('csrf_access_token');
     if (!csrfToken) {
-        setError('CSRF token not found. Please re-login.');
+        setError('CSRF token not found. Please re-login');
         setIsSubmitting(false);
         return;
     }
@@ -72,7 +72,7 @@ const EditPostModal = ({ isOpen, onClose, postToEdit, onPostUpdated }) => {
 
     } catch (err) {
       console.error('Failed to update post:', err);
-      setError(err.message || 'Failed to update post. Please try again.');
+      setError(err.message || 'Failed to update post. Please try again');
     } finally {
       setIsSubmitting(false);
     }
@@ -117,7 +117,6 @@ const EditPostModal = ({ isOpen, onClose, postToEdit, onPostUpdated }) => {
                 })}
                 </select>
             </div>
-
             <div className="form-group-create-post">
                 <label htmlFor="editPostTitle">Title (Optional):</label>
                 <input
@@ -144,7 +143,6 @@ const EditPostModal = ({ isOpen, onClose, postToEdit, onPostUpdated }) => {
             </div>
 
             {error && <p className="error-message-form">{error}</p>}
-
             <button type="submit" className="submit-post-btn" disabled={isSubmitting}>
                 {isSubmitting ? 'Saving Changes...' : 'Save Changes'}
             </button>

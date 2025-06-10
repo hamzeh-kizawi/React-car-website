@@ -88,7 +88,6 @@ const CreatePostModal = ({ isOpen, onClose, onPostCreated }) => {
         {cars.length === 0 && !isSubmitting && (
           <p className="error-message">Cannot create post: No cars available in the inventory.</p>
         )}
-
         {cars.length > 0 && (
           <form onSubmit={handleSubmit}>
             <div className="form-group-create-post">
@@ -113,7 +112,6 @@ const CreatePostModal = ({ isOpen, onClose, onPostCreated }) => {
                 })}
               </select>
             </div>
-
             <div className="form-group-create-post">
               <label htmlFor="postTitle">Title (Optional):</label>
               <input
@@ -125,7 +123,6 @@ const CreatePostModal = ({ isOpen, onClose, onPostCreated }) => {
                 disabled={isSubmitting}
               />
             </div>
-
             <div className="form-group-create-post">
               <label htmlFor="postContent">Your Message:*</label>
               <textarea
@@ -138,7 +135,6 @@ const CreatePostModal = ({ isOpen, onClose, onPostCreated }) => {
                 disabled={isSubmitting}
               ></textarea>
             </div>
-
             {error && <p className="error-message-form">{error}</p>}
 
             <button type="submit" className="submit-post-btn" disabled={isSubmitting}>

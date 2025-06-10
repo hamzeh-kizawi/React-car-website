@@ -142,7 +142,6 @@
     display: none;
   }
 }
-
 @media screen and (max-width: 767px) {
   .contactUs-content {
     padding: 20px 10px;

@@ -5,7 +5,6 @@ const CommentItem = ({ comment }) => {
   if (!comment) {
     return null; 
   }
-
   return (
     <div className="comment-item-container">
       <div className="comment-header">

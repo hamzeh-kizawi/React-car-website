@@ -64,7 +64,6 @@ function NavBar() {
                 )}
                 </div>
             </nav>
-
             {showSearch && <SearchBar onClose={() => setShowSearch(false)} />}
             {showLogout && <Logout onClose={() => setShowLogout(false)} />}
         </>

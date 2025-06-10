@@ -34,7 +34,6 @@
   text-transform: uppercase;
 }
 
-
 @media screen and (max-width: 600px) {
   .back-to-main-screen {
     top: 10px;

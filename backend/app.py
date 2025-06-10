@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response, stream_with_context
 from flask_cors import CORS
 import mysql.connector
 import os
@@ -27,13 +27,12 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
 
-# JWT Configuration
 app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY")
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/refresh'
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
-app.config['JWT_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+app.config['JWT_COOKIE_SECURE'] = False  
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=7)
 
@@ -263,8 +262,7 @@ def chatbot():
     {car_list}
 
     Your task:
-    - Use the full message history to understand context and follow-up questions.
-    - If a user asks about "it", "that car", or similar, refer to the last mentioned car in their previous messages.
+    - **Strictly stick to car-related topics.** If the user asks about anything unrelated to cars (e.g., politics, weather, personal opinions, general knowledge), you must politely decline. A good response would be: "As the SpeedAI assistant, my expertise is all about helping you find the perfect car from our inventory. Do you have any questions about our models?"
     - If a specific car is mentioned (e.g., "BMW 320i"), respond with detailed info from the inventory.
     - If the car is not found, reply with: "Sorry, we don't have that car in our inventory. Here are some similar options:" and suggest 2–3 alternatives.
     - Handle small typos and case differences.
@@ -289,27 +287,41 @@ def chatbot():
     }
 
     data = {
-        "model": "deepseek-reasoner",
+        "model": "deepseek-chat",
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_query}
         ],
         "temperature": 0.7,
-        "max_tokens": 1500
+        "max_tokens": 1500,
+        "stream": True
     }
 
-    response = send_request_with_retries(
-        "https://api.deepseek.com/v1/chat/completions",
-        headers=headers,
-        data=data,
-        retries=5,
-        delay=3
-    )
+    try:
+        api_key = os.getenv("DEEPSEEK_API_KEY")
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        api_response = requests.post(
+            "https://api.deepseek.com/v1/chat/completions",
+            headers=headers,
+            json=data,
+            stream=True
+        )
+        api_response.raise_for_status()
 
-    if response and response.ok:
-        return jsonify({"response": response.json()["choices"][0]["message"]["content"].strip()}), 200
+        def generate():
+            for chunk in api_response.iter_content(chunk_size=None):
+                if chunk:
+                    yield chunk
 
-    return jsonify({"response": "Sorry, I couldn't get a response from the chatbot. Please try again later."}), 500
+        return Response(stream_with_context(generate()), content_type='text/event-stream')
+
+    except requests.exceptions.RequestException as e:
+        print(f"DeepSeek API Error: {e}")
+        return jsonify({"response": "Sorry, I couldn't get a response from the chatbot. Please try again later."}), 500
 
 
 

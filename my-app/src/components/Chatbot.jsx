@@ -83,7 +83,7 @@ const Chatbot = ({ onShowRecommendations }) => {
         if (!user) {
             setMessages(prev => [
                 ...prev,
-                { text: "❌ You must be logged in or a guest to use the chatbot.", sender: "bot" }
+                { text: "❌ You must be logged in or a guest to use the chatbot", sender: "bot" }
             ]);
             return;
         }
@@ -121,12 +121,50 @@ const Chatbot = ({ onShowRecommendations }) => {
 
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-            const data = await response.json();
-            const botResponse = data.response;
+            setMessages(prev => [...prev, { text: "", sender: "bot" }]);
+            
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let fullBotResponse = "";
+            let thinkingStateUpdated = false; 
 
-            setMessages(prev => [...prev, { text: botResponse, sender: "bot" }]);
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
 
-            const cars = extractCarNames(botResponse);
+                if (!thinkingStateUpdated) {
+                    setIsThinking(false);
+                    thinkingStateUpdated = true;
+                }
+
+                const chunk = decoder.decode(value);
+                const lines = chunk.split('\n').filter(line => line.trim() !== '');
+
+                for (const line of lines) {
+                    if (line.startsWith('data: ')) {
+                        const jsonStr = line.substring(6);
+                        if (jsonStr === '[DONE]') continue;
+
+                        try {
+                            const parsed = JSON.parse(jsonStr);
+                            const content = parsed.choices[0]?.delta?.content || "";
+                            
+                            if (content) {
+                                fullBotResponse += content;
+                                setMessages(prev => {
+                                    const newMessages = [...prev];
+                                    newMessages[newMessages.length - 1].text += content;
+                                    return newMessages;
+                                });
+                            }
+                        } catch (e) {
+                            console.error("Error parsing stream chunk:", e);
+                        }
+                    }
+                }
+            }
+
+            const cars = extractCarNames(fullBotResponse);
             if (cars.length >= 2) {
                 setLastSuggestedCars(cars);
                 setMessages(prev => [
@@ -139,15 +177,19 @@ const Chatbot = ({ onShowRecommendations }) => {
             }
         } catch (err) {
             console.error("Chatbot error:", err);
-            setMessages(prev => [
-                ...prev,
-                {
-                    text: "We're having connection issues. Please try again shortly.",
-                    sender: "bot"
+            setMessages(prev => {
+                const newMessages = [...prev];
+                if (newMessages[newMessages.length - 1].text === "") {
+                    newMessages[newMessages.length - 1].text = "We're having connection issues. Please try again shortly.";
+                } else {
+                    newMessages.push({ text: "We're having connection issues. Please try again shortly", sender: "bot" });
                 }
-            ]);
+                return newMessages;
+            });
         } finally {
-            setIsThinking(false);
+            if (isThinking) {
+                 setIsThinking(false);
+            }
             setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
         }
     };
@@ -162,7 +204,7 @@ const Chatbot = ({ onShowRecommendations }) => {
 
             {showWarning && (
                 <div className="chatbot-warning">
-                    ❌ You need to log in to use the chatbot.
+                    ❌ You need to log in to use the chatbot
                 </div>
             )}
 

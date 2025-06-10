@@ -29,7 +29,7 @@ const Brands = () => {
         ))}
       </div>
 
-      {/* Render Cars component for each brand, dynamically sorted */}
+      {/* render cars component for each brand dynamically sorted */}
       {sortedBrands.map((brand) => {
         const filteredCars = cars.filter((car) => car.brand === brand.name);
         return filteredCars.length > 0 ? <Cars key={brand.name} brand={brand.name} cars={filteredCars} /> : null;
