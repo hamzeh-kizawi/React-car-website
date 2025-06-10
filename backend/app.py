@@ -345,6 +345,7 @@ def create_post():
     try:
         db = get_db()
         cursor = db.cursor(dictionary=True)
+        cursor.execute("SET time_zone = '+00:00'")
 
 
         cursor.execute("SELECT id FROM cars WHERE id = %s", (car_id,))
@@ -398,6 +399,7 @@ def get_all_posts():
     try:
         db = get_db()
         cursor = db.cursor(dictionary=True)
+        cursor.execute("SET time_zone = '+00:00'")
 
         query = """
             SELECT
@@ -430,6 +432,7 @@ def get_single_post(post_id):
     try:
         db = get_db()
         cursor = db.cursor(dictionary=True)
+        cursor.execute("SET time_zone = '+00:00'")
 
         post_query = """
             SELECT p.id, p.user_id, u.username, p.car_id, c.name AS car_name, c.image AS car_image,
@@ -486,6 +489,8 @@ def create_comment(post_id):
     try:
         db = get_db()
         cursor = db.cursor(dictionary=True) 
+        cursor.execute("SET time_zone = '+00:00'")
+
         cursor.execute("SELECT id FROM posts WHERE id = %s", (post_id,))
         if cursor.fetchone() is None:
             return jsonify({"message": "Post not found"}), 404
@@ -536,6 +541,7 @@ def update_post(post_id):
     try:
         db = get_db()
         cursor = db.cursor(dictionary=True)
+        cursor.execute("SET time_zone = '+00:00'")
 
         cursor.execute("SELECT user_id FROM posts WHERE id = %s", (post_id,))
         post_data = cursor.fetchone()
