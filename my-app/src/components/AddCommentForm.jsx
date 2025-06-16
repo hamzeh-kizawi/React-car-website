@@ -11,6 +11,8 @@ const AddCommentForm = ({ postId, onCommentAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Basic validation to ensure the comment isn't empty and the user is not a guest
     if (!content.trim()) {
       setError('Comment cannot be empty.');
       return;

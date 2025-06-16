@@ -22,7 +22,7 @@ function App() {
     setFilteredCarNames(carNames);
     setShowSearch(true);
   };
-
+  {/* hide the chatbot from these pages */}
   const hideChatBotOnPages = ['/login', '/signup', '/discussions']; 
   
   const showChatBotOnPage = !hideChatBotOnPages.some(path => location.pathname.toLowerCase().startsWith(path)) &&

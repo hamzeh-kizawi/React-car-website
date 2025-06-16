@@ -27,12 +27,14 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
 
+
+# configure JSON web token
 app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY")
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/refresh'
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
-app.config['JWT_COOKIE_SECURE'] = False  
+app.config['JWT_COOKIE_SECURE'] = False  # make True in production with HTTPS
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=7)
 
@@ -48,6 +50,8 @@ connection_config = {
 def get_db():
     return mysql.connector.connect(**connection_config)
 
+
+# Function to find closest car name match for a query
 def find_closest_car_match(query, cars):
     all_names = [f"{car['brand']} {car['name']}" for car in cars]
     matches = difflib.get_close_matches(query.lower(), [name.lower() for name in all_names], n=1, cutoff=0.6)
@@ -59,6 +63,7 @@ def find_closest_car_match(query, cars):
                 return name
     return None
 
+# Function to send a request to the DeepSeek api with retries
 def send_request_with_retries(url, headers, data, retries=3, delay=2):
     session = requests.Session()
     retry = Retry(
@@ -77,7 +82,9 @@ def send_request_with_retries(url, headers, data, retries=3, delay=2):
     except requests.exceptions.RequestException as e:
         print(f"DeepSeek API Error: {e}")
         return None
+    
 
+# to get all cars from the DB
 @app.route('/cars', methods=['GET'])
 def get_cars():
     db = get_db()
@@ -103,6 +110,7 @@ def register():
     try:
         db = get_db()
         cursor = db.cursor(dictionary=True)
+        # to check if a user with the same email already exists
         cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
         existing_user = cursor.fetchone()
 
@@ -110,7 +118,7 @@ def register():
             cursor.close()
             db.close()
             return jsonify({"message": "Email already registered. Please use a different email or login."}), 409 
-
+        # hashing the password before storing it
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 
@@ -172,6 +180,7 @@ def login():
     else:
         return jsonify({"message": "Invalid credentials"}), 401
 
+# endpoint for guest feature
 @app.route('/guest-login', methods=['POST'])
 def guest_login():
     guest_identity = "guest_user"
@@ -183,7 +192,7 @@ def guest_login():
     return response, 200
 
 @app.route('/refresh', methods=['POST'])
-@jwt_required(refresh=True)
+@jwt_required(refresh=True) # needs a valid refresh token
 def refresh():
     identity = get_jwt_identity()
     access_token = create_access_token(identity=identity)
@@ -217,6 +226,7 @@ def get_user():
 @jwt_required()
 def chatbot():
     identity = get_jwt_identity()
+    # prevent unauthorized users to access the chatbot
     if identity != "guest_user" and not isinstance(identity, int):
         print(f"[BLOCKED] Invalid identity accessing chatbot: {identity}")
         return jsonify({"response": "Unauthorized"}), 401
@@ -365,7 +375,7 @@ def create_post():
              print(f"Error: lastrowid is None after inserting post for user {current_user_id}")
              return jsonify({"message": "Error creating post, failed to get new post ID"}), 500
 
-
+        # fetch the new created post to return to the frontend
         cursor.execute("""
             SELECT p.id, p.user_id, u.username, p.car_id, c.name as car_name, c.image as car_image,
                    p.title, p.content, p.created_at, p.updated_at
@@ -491,6 +501,7 @@ def create_comment(post_id):
         cursor = db.cursor(dictionary=True) 
         cursor.execute("SET time_zone = '+00:00'")
 
+        # make sure the post exists before adding a comment
         cursor.execute("SELECT id FROM posts WHERE id = %s", (post_id,))
         if cursor.fetchone() is None:
             return jsonify({"message": "Post not found"}), 404
@@ -621,6 +632,7 @@ def delete_post(post_id):
         db = get_db()
         cursor = db.cursor(dictionary=True) 
 
+        # check if the post exists and if the current user is the author of that post
         cursor.execute("SELECT user_id FROM posts WHERE id = %s", (post_id,))
         post_data = cursor.fetchone()
 

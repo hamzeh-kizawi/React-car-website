@@ -15,8 +15,11 @@ const Brands = () => {
     { name: "Volkswagen", logo: "/Cars-logo/Volkswagen-logo.png" },
   ];
 
+  // re-sorts the brands array to show the selected brand first
   const sortedBrands = selectedBrand
+    // if a brand is selected, create a new array with the selected brand at the front, followed by the rest
     ? [brands.find((b) => b.name === selectedBrand), ...brands.filter((b) => b.name !== selectedBrand)]
+    // if no brand is selected use the original order
     : brands;
 
   return (

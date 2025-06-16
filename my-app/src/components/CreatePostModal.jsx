@@ -14,8 +14,10 @@ const CreatePostModal = ({ isOpen, onClose, onPostCreated }) => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // useEffect to resets the form fields whenever the modal is opened
   useEffect(() => {
     if (isOpen) {
+      // select the first car in the list by default
       setSelectedCarId(cars.length > 0 ? cars[0]?.id || '' : '');
       setTitle('');
       setContent('');
@@ -62,6 +64,7 @@ const CreatePostModal = ({ isOpen, onClose, onPostCreated }) => {
         throw new Error(data.message || `HTTP error! status: ${response.status}`);
       }
 
+      // If all good call the parent component's onPostCreated function with the new post data
       onPostCreated(data.post);
       onClose();
 

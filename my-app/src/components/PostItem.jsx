@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import '../css/PostItem.css'; 
 
 const PostItem = ({ post }) => {
+  // to ensures the car name is displayed correctly without repeating the brand
   const displayCarName = post.car_name && post.brand && post.car_name.toLowerCase().startsWith(post.brand.toLowerCase())
     ? post.car_name
     : `${post.brand || ''} ${post.car_name || ''}`.trim();
 
   return (
+
     <div className="post-item-card-modern">
       <div className="post-item-main-content">
         {post.car_image && (

@@ -10,11 +10,13 @@ const SearchBar = ({ onClose, filteredCarNames = [] }) => {
   const inputRef = useRef(null);
 
   const filteredCars = filteredCarNames.length > 0
+    // if a pre filtered list of names is passed in (from the chatbot), use that list
     ? cars.filter((car) =>
         filteredCarNames.some(name =>
           car.name.toLowerCase().includes(name.toLowerCase())
         )
       )
+    // Otherwise, filter the cars based on what the user has typed in the search bar  
     : cars.filter((car) =>
         car.name.toLowerCase().includes(searchQuery.toLowerCase())
       );

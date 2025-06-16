@@ -8,6 +8,7 @@ import { AuthProvider } from './contexts/AuthContext.jsx';
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <AuthProvider>
+      {/* CarProvider fetches and holds all the car data making it available throughout the app */}
       <CarProvider>
         <App />
       </CarProvider>

@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     };
 
 
-
+    // to get a new access token using the refresh token
     const tryRefreshToken = async () => {
         try {
             const csrfRefreshToken = Cookies.get("csrf_refresh_token");
@@ -47,7 +47,8 @@ export const AuthProvider = ({ children }) => {
                 console.log("Token refreshed");
                 await fetchUser();
             } else {
-                console.warn("Refresh token expired or invalid.");
+                // If refreshing fails, the user is logged out
+                console.warn("Refresh token expired or invalid");
                 setUser(null); 
             }
         } catch (err) {

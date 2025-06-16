@@ -32,6 +32,7 @@ const Chatbot = ({ onShowRecommendations }) => {
             .catch(console.error);
     }, []);
 
+    // manages the teaser message
     useEffect(() => {
         const teaserTimer = setTimeout(() => setShowTeaser(true), 8000);
         const autoHideTimer = setTimeout(() => setShowTeaser(false), 16000);
@@ -45,20 +46,24 @@ const Chatbot = ({ onShowRecommendations }) => {
         if (isOpen && inputRef.current) inputRef.current.focus();
     }, [isOpen]);
 
+    // automatically scrolls the message window to the bottom
     useEffect(() => {
         if (bottomRef.current) bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }, [messages, isThinking]);
 
+    // it toggles the chatbot window open or closed
     const toggleChatbot = () => {
+        // If there's no user show a warning instead of opening the chat
         if (!user) {
             setShowWarning(true);
             setTimeout(() => setShowWarning(false), 4000);
             return;
         }
         setIsOpen(!isOpen);
-        setShowTeaser(false);
+        setShowTeaser(false); // hide the teaser when chat is open manually
     };
 
+    // to extract car names from the bot's response text
     const extractCarNames = (text) => {
         const boldRegex = /\*\*(.*?)\*\*/g;
         const matches = [...text.matchAll(boldRegex)];
@@ -88,9 +93,11 @@ const Chatbot = ({ onShowRecommendations }) => {
             return;
         }
 
+        // add the user's message to the chat and clear the input field
         setMessages(prev => [...prev, { text: trimmedInput, sender: "user" }]);
         setUserInput("");
 
+        // if the user types "yes", show the last recommended cars
         if (trimmedInput.toLowerCase() === "yes") {
             if (lastSuggestedCars.length > 0) {
                 setMessages(prev => [...prev, { text: `Sure! Opening the search bar with those models now. 🚗`, sender: "bot" }]);
@@ -106,7 +113,7 @@ const Chatbot = ({ onShowRecommendations }) => {
         }
 
         setIsThinking(true);
-        setLastSuggestedCars([]);
+        setLastSuggestedCars([]); // clear old suggestions
 
         try {
             const response = await fetch("http://localhost:5000/chatbot", {
@@ -123,6 +130,7 @@ const Chatbot = ({ onShowRecommendations }) => {
 
             setMessages(prev => [...prev, { text: "", sender: "bot" }]);
             
+            // to handle the streamed response from the backend for a real time typing effect
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
             let fullBotResponse = "";
@@ -137,6 +145,7 @@ const Chatbot = ({ onShowRecommendations }) => {
                     thinkingStateUpdated = true;
                 }
 
+                 // decode the chunk of data and process it line by line
                 const chunk = decoder.decode(value);
                 const lines = chunk.split('\n').filter(line => line.trim() !== '');
 
@@ -164,6 +173,7 @@ const Chatbot = ({ onShowRecommendations }) => {
                 }
             }
 
+            // after the full response receives check if it contains car recommendations
             const cars = extractCarNames(fullBotResponse);
             if (cars.length >= 2) {
                 setLastSuggestedCars(cars);

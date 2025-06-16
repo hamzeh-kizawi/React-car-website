@@ -14,9 +14,6 @@ function ContactUs() {
     setIsSending(true);
 
   
-    console.log("Service ID:", import.meta.env.VITE_EMAILJS_SERVICE_ID);
-    console.log("Template ID:", import.meta.env.VITE_EMAILJS_TEMPLATE_ID);
-    console.log("Public Key:", import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 
     const templateParams = {
       fullName,
@@ -34,7 +31,7 @@ function ContactUs() {
       );
 
       console.log("Email Sent:", response);
-      alert("Message Sent Successfully! ✅");
+      alert("Message Sent Successfully!");
 
       setFullName("");
       setPhone("");
@@ -42,8 +39,9 @@ function ContactUs() {
       setMessage("");
     } catch (error) {
       console.error("EmailJS Error:", error);
-      alert("Failed to send message ❌");
+      alert("Failed to send message");
     } finally {
+      // no matter if it was successful or not set sending back to false
       setIsSending(false);
     }
   };

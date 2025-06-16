@@ -6,12 +6,14 @@ function AboutUs() {
   const aboutUsRef = useRef(null);
 
   useEffect(() => {
+    //trigger its callback function when the element it is watching intersects with the viewport
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.intersectionRatio > 0.7) { 
           setIsVisible(true);
         }
       },
+      // observer only trigger when the visibility threshold of 70% is passed
       { threshold: 0.7 }
     );
 
@@ -21,12 +23,14 @@ function AboutUs() {
 
     return () => {
       if (aboutUsRef.current) {
+        // stop observing the element to clean up
         observer.unobserve(aboutUsRef.current);
       }
     };
   }, []);
 
   return (
+
     <div className='aboutUs-container' ref={aboutUsRef}>
       <div className="aboutUs-content">
         <div className="aboutUs-texts">

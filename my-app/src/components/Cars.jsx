@@ -24,7 +24,7 @@ export default function Cars({ brand }) {
     mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
   };
 
-  
+  // filter the full list of cars to get only the ones that match the 'brand' prop
   const filteredCars = cars.filter((car) => car.brand === brand);
 
   return (

@@ -34,6 +34,7 @@ function Logout({ onClose }) {
         }
     };
     return (
+        
         <div className="logout-overlay">
             <div className="logout-modal">
                 <h2>Confirm Logout</h2>

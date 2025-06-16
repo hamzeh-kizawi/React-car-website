@@ -38,7 +38,7 @@ cd React-car-website
 ```
 
 2. API Key Setup (!!!Important!!!)
-You need to get API keys from two external services for the project to be fully functional:
+   You need to get API keys from two external services for the project to be fully functional:
 
 EmailJS (for the contact form):
 
@@ -55,7 +55,7 @@ Navigate to the "API Keys" section.
 Create a new secret key. Copy this key and save it somewhere safe.
 
 3. Backend Setup (Flask Server)
-This part sets up the server and the database.
+   This part sets up the server and the database.
 
 Navigate to the backend folder:
 
@@ -64,6 +64,7 @@ Navigate to the backend folder:
 cd backend
 
 ```
+
 Create and activate a Python virtual environment: A virtual environment keeps the project's Python packages separate from your global ones.
 
 For Windows:
@@ -75,10 +76,13 @@ python -m venv venv
 ```
 .\venv\Scripts\activate
 ```
+
 For macOS/Linux:
+
 ```
 python3 -m venv venv
 ```
+
 ```
 source venv/bin/activate
 ```
@@ -88,10 +92,11 @@ Install the required Python packages:
 ```
 pip install -r requirements.txt
 ```
+
 Set up the database:
 
 Open MySQL Workbench and connect to your local database server (using the username and password you set during installation).
-Create a new database by clicking the "create a new schema" icon. Name it exactly car_website. 
+Create a new database by clicking the "create a new schema" icon. Name it exactly car_website.
 Go to File > Open SQL Script... and select the schema.sql file located in backend/database. Click the lightning bolt icon to run the script. This will create all the necessary tables.
 Do the same for the seed.sql file (File > Open SQL Script...). Run it to populate the cars table with the initial data.
 
@@ -99,7 +104,6 @@ Configure your secret keys:
 
 In the backend folder, create a copy of .env.example and name it .env.
 Open the new .env file and fill in your details:
-
 
 ```
 DB_HOST=localhost
@@ -112,7 +116,6 @@ DEEPSEEK_API_KEY=your_deepseek_api_key_here # paste your key from DeepSeek
 
 Run the Backend Server:
 
-
 ```
 flask run
 ```
@@ -120,17 +123,15 @@ flask run
 Keep this terminal open. The backend is now running at http://127.0.0.1:5000.
 
 4. Frontend Setup (React App)
-This part sets up the user interface.
+   This part sets up the user interface.
 
 Open a new terminal. Navigate to the frontend folder:
-
-
 
 ```
 cd my-app
 ```
-Install the required packages:
 
+Install the required packages:
 
 ```
 npm install
@@ -140,9 +141,6 @@ Configure your secret keys:
 
 In the my-app folder, create a copy of .env.example and name it .env.
 Open the new .env file and fill in your EmailJS credentials:
-
-
-
 
 ```
 VITE_EMAILJS_SERVICE_ID=your_service_id
@@ -155,5 +153,5 @@ Run the Frontend App:
 ```
 npm run dev
 ```
-The React application will now be running. Your browser should open to http://localhost:5173.
 
+The React application will now be running. Your browser should open to http://localhost:5173.

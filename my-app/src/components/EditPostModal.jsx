@@ -12,6 +12,7 @@ const EditPostModal = ({ isOpen, onClose, postToEdit, onPostUpdated }) => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // pre-fill the form fields with the existing post's data
   useEffect(() => {
     if (isOpen && postToEdit) {
       setSelectedCarId(postToEdit.car_id || (cars.length > 0 ? cars[0]?.id || '' : ''));
@@ -26,6 +27,7 @@ const EditPostModal = ({ isOpen, onClose, postToEdit, onPostUpdated }) => {
     setError('');
     setIsSubmitting(true);
 
+    // to ensure a car is selected and the content is not empty
     if (!selectedCarId) {
       setError('Please select a car');
       setIsSubmitting(false);
